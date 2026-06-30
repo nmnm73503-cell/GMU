@@ -16,6 +16,18 @@ def url(path: str = "") -> str:
     return BASE_PATH + path
 
 
+def safe_redirect(dest: str, fallback: str = "/") -> str:
+    """Redirect target from forms — avoid doubling BASE_PATH (/gmu/gmu/...)."""
+    dest = (dest or fallback).strip()
+    if not dest.startswith("/"):
+        dest = "/" + dest
+    if BASE_PATH and dest.startswith(BASE_PATH):
+        return dest
+    path_part = dest.split("?", 1)[0]
+    query = "?" + dest.split("?", 1)[1] if "?" in dest else ""
+    return url(path_part) + query
+
+
 def static_url(path: str) -> str:
     path = path.lstrip("/")
     return f"{BASE_PATH}/static/{path}"

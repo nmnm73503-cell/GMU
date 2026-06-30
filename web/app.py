@@ -18,6 +18,7 @@ from helpers import (
     has_custom_logo,
     logo_url,
     resolve_date_range,
+    safe_redirect,
     static_url,
     time_slot_options,
     url,
@@ -690,13 +691,13 @@ async def booking_delete(
             "SELECT * FROM appointments WHERE id = ?", (appt_id,)
         ).fetchone()
         if not appt:
-            return RedirectResponse(url(dest), status_code=303)
+            return RedirectResponse(safe_redirect(dest, "/bookings?tab=upcoming"), status_code=303)
         client_id = appt["client_id"]
         _remove_booking_photo(appt["photo_path"])
         conn.execute("DELETE FROM appointments WHERE id = ?", (appt_id,))
         if client_id:
             _refresh_client_ltv(conn, client_id)
-    return RedirectResponse(url(dest), status_code=303)
+    return RedirectResponse(safe_redirect(dest, "/bookings?tab=upcoming"), status_code=303)
 
 
 @router.get("/analytics", response_class=HTMLResponse)
@@ -825,7 +826,7 @@ async def note_add(
                 (category, body),
             )
     dest = redirect_to if redirect_to.startswith("/") else "/income"
-    return RedirectResponse(url(dest), status_code=303)
+    return RedirectResponse(safe_redirect(dest, "/income"), status_code=303)
 
 
 @router.post("/notes/{note_id}/delete")
@@ -833,7 +834,7 @@ async def note_delete(note_id: int, redirect_to: str = Form("/income")):
     with connect() as conn:
         conn.execute("DELETE FROM studio_notes WHERE id = ?", (note_id,))
     dest = redirect_to if redirect_to.startswith("/") else "/income"
-    return RedirectResponse(url(dest), status_code=303)
+    return RedirectResponse(safe_redirect(dest, "/income"), status_code=303)
 
 
 @router.get("/receipts", response_class=HTMLResponse)
