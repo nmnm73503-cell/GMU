@@ -463,6 +463,10 @@ async def bookings_hub(
     session_packages = []
     menu_packages = []
     with connect() as conn:
+        cfg = {
+            r["key"]: r["value"]
+            for r in conn.execute("SELECT key, value FROM settings").fetchall()
+        }
         upcoming_rows = conn.execute(
             """SELECT * FROM appointments
                WHERE date >= ? AND status NOT IN ('completed', 'cancelled', 'no_show')
@@ -499,10 +503,6 @@ async def bookings_hub(
         elif tab == "add":
             form_ctx = _booking_form_ctx()
         if tab == "session":
-            cfg = {
-                r["key"]: r["value"]
-                for r in conn.execute("SELECT key, value FROM settings").fetchall()
-            }
             session_packages = _session_packages_list(conn)
         # Menu moved to its own page (/menu). Keep galleries available for forms if needed.
         if tab in ("add", "edit"):
