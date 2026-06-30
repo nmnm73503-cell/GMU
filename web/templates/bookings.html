@@ -148,7 +148,7 @@
 {% endif %}
 {% endblock %}
 {% block fab %}
-{% if tab in ('upcoming', 'past', 'month') %}
+{% if tab in ('past', 'month') %}
 <a href="{{ url('/bookings') }}?tab=add" class="fab" title="New inquiry" aria-label="New inquiry">+</a>
 {% endif %}
 {% endblock %}
