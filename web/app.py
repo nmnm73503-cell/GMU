@@ -28,12 +28,17 @@ from instagram import fetch_instagram_stats
 from packages import (
     CATEGORY_LABELS,
     PAYMENT_METHODS,
+    aggregate_session_faces,
+    create_package,
+    delete_package,
+    load_package_images,
     load_packages,
     match_package_for_appt,
     package_by_id,
     packages_grouped,
     packages_with_galleries,
     payment_label,
+    snapshot_session_faces,
 )
 from seed import import_seed
 
@@ -81,25 +86,7 @@ def _session_packages_list(conn) -> list[dict]:
 
 
 def _aggregate_session_faces(faces: list[dict], conn) -> list[dict]:
-    groups: dict[str, dict] = {}
-    for face in faces:
-        pkg = package_by_id(conn, face.get("package_id", ""))
-        if not pkg:
-            continue
-        pid = pkg["id"]
-        if pid not in groups:
-            groups[pid] = {
-                "package_id": pid,
-                "label": pkg["label"],
-                "unit_price": float(pkg["price"] or 0),
-                "count": 0,
-            }
-        groups[pid]["count"] += 1
-    lines = []
-    for line in groups.values():
-        line["subtotal"] = line["count"] * line["unit_price"]
-        lines.append(line)
-    return sorted(lines, key=lambda x: x["label"])
+    return aggregate_session_faces(faces, conn)
 
 
 def _session_lines_from_appt(appt, conn) -> list[dict]:
@@ -605,6 +592,7 @@ async def session_complete(request: Request):
         if not appt:
             raise HTTPException(404, "Booking not found")
 
+        faces = snapshot_session_faces(faces, conn)
         session_lines = _aggregate_session_faces(faces, conn)
         glam_total = sum(line["subtotal"] for line in session_lines)
         transport = float(appt["transport_cost"] or 0)
@@ -1138,6 +1126,52 @@ async def packages_settings(request: Request):
             "category_labels": CATEGORY_LABELS,
         },
     )
+
+
+@router.post("/settings/packages/add")
+async def packages_add(
+    label: str = Form(...),
+    price: float = Form(0),
+    category: str = Form("event"),
+    service_style: str = Form(""),
+    headcount_tier: str = Form(""),
+    photos: list[UploadFile] | None = File(None),
+):
+    with connect() as conn:
+        try:
+            pid = create_package(
+                conn,
+                label=label,
+                price=price,
+                category=category,
+                service_style=service_style,
+                headcount_tier=headcount_tier,
+                active=True,
+            )
+        except ValueError as e:
+            raise HTTPException(400, str(e)) from e
+        files = [f for f in (photos or []) if f.filename]
+        if files:
+            await _save_package_images(conn, pid, files)
+    return RedirectResponse(url("/settings/packages?added=1"), status_code=303)
+
+
+@router.post("/settings/packages/{package_id}/delete")
+async def packages_delete(package_id: str):
+    if package_id in ("custom", "tbd"):
+        raise HTTPException(400, "Cannot delete this package")
+    with connect() as conn:
+        imgs = load_package_images(conn, package_id)
+        for img in imgs:
+            path_val = img.get("path") or ""
+            if "uploads/packages/" in path_val:
+                rel = path_val.split("uploads/packages/")[-1].split("?")[0]
+                path = BASE / "static" / "uploads" / "packages" / rel
+                if path.is_file():
+                    path.unlink(missing_ok=True)
+        if not delete_package(conn, package_id):
+            raise HTTPException(404, "Package not found")
+    return RedirectResponse(url("/settings/packages?deleted=1"), status_code=303)
 
 
 @router.post("/settings/packages")

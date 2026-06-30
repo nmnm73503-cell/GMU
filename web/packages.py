@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import re
 import sqlite3
+import time
 
 PAYMENT_METHODS = [
     ("cash", "Cash"),
@@ -119,7 +121,134 @@ def load_all_package_images(conn: sqlite3.Connection) -> dict[str, list[str]]:
 
 def packages_with_galleries(conn: sqlite3.Connection, active_only: bool = True) -> list[dict]:
     packages = load_packages(conn, active_only=active_only)
-    galleries = load_all_package_images(conn)
     for pkg in packages:
-        pkg["images"] = galleries.get(pkg["id"], [])
+        gallery = load_package_images(conn, pkg["id"])
+        pkg["gallery"] = gallery
+        pkg["images"] = [g["path"] for g in gallery]
     return packages
+
+
+def _slug_id(label: str) -> str:
+    s = re.sub(r"[^a-z0-9]+", "_", label.lower().strip())[:48].strip("_")
+    return s or f"pkg_{int(time.time())}"
+
+
+def unique_package_id(conn: sqlite3.Connection, label: str) -> str:
+    base = _slug_id(label)
+    pid = base
+    n = 2
+    while conn.execute(
+        "SELECT 1 FROM service_packages WHERE id = ?", (pid,)
+    ).fetchone():
+        pid = f"{base}_{n}"
+        n += 1
+    return pid
+
+
+def create_package(
+    conn: sqlite3.Connection,
+    *,
+    label: str,
+    price: float,
+    category: str = "event",
+    service_style: str = "",
+    headcount_tier: str = "",
+    active: bool = True,
+) -> str:
+    seed_default_packages(conn)
+    label = label.strip()
+    if not label:
+        raise ValueError("Package name required")
+    if category not in CATEGORY_LABELS:
+        category = "other"
+    pid = unique_package_id(conn, label)
+    sort_order = conn.execute(
+        "SELECT COALESCE(MAX(sort_order), 0) + 1 FROM service_packages"
+    ).fetchone()[0]
+    conn.execute(
+        """INSERT INTO service_packages
+           (id, label, service_style, headcount_tier, price, category, sort_order, active)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+        (
+            pid,
+            label,
+            service_style.strip(),
+            headcount_tier.strip(),
+            price,
+            category,
+            sort_order,
+            1 if active else 0,
+        ),
+    )
+    return pid
+
+
+def delete_package(conn: sqlite3.Connection, package_id: str) -> bool:
+    if package_id in ("custom", "tbd"):
+        return False
+    row = conn.execute(
+        "SELECT id FROM service_packages WHERE id = ?", (package_id,)
+    ).fetchone()
+    if not row:
+        return False
+    conn.execute("DELETE FROM package_images WHERE package_id = ?", (package_id,))
+    conn.execute("DELETE FROM service_packages WHERE id = ?", (package_id,))
+    return True
+
+
+def face_unit_price(face: dict, pkg: dict | None) -> float:
+    """Price for one face — prefer snapshot stored on the face."""
+    if face.get("price") is not None and face.get("price") != "":
+        try:
+            return float(face["price"])
+        except (TypeError, ValueError):
+            pass
+    if pkg:
+        return float(pkg.get("price") or 0)
+    return 0.0
+
+
+def face_label(face: dict, pkg: dict | None) -> str:
+    if face.get("label"):
+        return str(face["label"])
+    if pkg:
+        return pkg.get("label") or pkg["id"]
+    return face.get("package_id") or "Service"
+
+
+def snapshot_session_faces(faces: list[dict], conn: sqlite3.Connection) -> list[dict]:
+    """Freeze label + price on each face at session/booking time."""
+    out = []
+    for face in faces:
+        pkg = package_by_id(conn, face.get("package_id", ""))
+        row = dict(face)
+        row["label"] = face_label(face, pkg)
+        row["price"] = face_unit_price(face, pkg)
+        if pkg:
+            row.setdefault("style", pkg.get("service_style") or "")
+            row.setdefault("tier", pkg.get("headcount_tier") or "")
+        out.append(row)
+    return out
+
+
+def aggregate_session_faces(faces: list[dict], conn: sqlite3.Connection) -> list[dict]:
+    """Receipt lines from faces — uses stored prices, not current catalog."""
+    groups: dict[str, dict] = {}
+    for face in faces:
+        pkg = package_by_id(conn, face.get("package_id", ""))
+        pid = face.get("package_id") or (pkg["id"] if pkg else "unknown")
+        label = face_label(face, pkg)
+        unit = face_unit_price(face, pkg)
+        if pid not in groups:
+            groups[pid] = {
+                "package_id": pid,
+                "label": label,
+                "unit_price": unit,
+                "count": 0,
+            }
+        groups[pid]["count"] += 1
+    lines = []
+    for line in groups.values():
+        line["subtotal"] = line["count"] * line["unit_price"]
+        lines.append(line)
+    return sorted(lines, key=lambda x: x["label"])

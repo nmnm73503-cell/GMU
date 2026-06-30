@@ -1536,6 +1536,23 @@ main > .section-title {
 
 .package-thumb-row { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.35rem; }
 .package-edit-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; }
+.package-thumb-wrap {
+  position: relative;
+  display: inline-block;
+}
+.package-thumb-wrap .btn-delete-inline {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+.package-add-form label { margin-top: 0.65rem; }
+.package-actions .btn-delete { width: 100%; margin-top: 0.35rem; }
 
 /* FAB — hide overlap on form tabs; keep above nav */
 .fab { line-height: 1; padding-bottom: 2px; }
