@@ -5,6 +5,13 @@ from pathlib import Path
 DB_PATH = Path(__file__).parent / "data" / "glam.db"
 
 
+def _normalize_google_maps_key(key: str) -> str:
+    key = (key or "").strip()
+    if key.startswith("AlzaSy"):
+        key = "AIzaSy" + key[6:]
+    return key
+
+
 def connect() -> sqlite3.Connection:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
@@ -175,7 +182,10 @@ def get_setting(key: str, default: str = "") -> str:
         row = conn.execute(
             "SELECT value FROM settings WHERE key = ?", (key,)
         ).fetchone()
-        return row["value"] if row else default
+        value = row["value"] if row else default
+        if key == "google_maps_api_key" and value:
+            value = _normalize_google_maps_key(value)
+        return value
 
 
 def set_setting(key: str, value: str) -> None:

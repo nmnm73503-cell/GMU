@@ -57,6 +57,19 @@ def format_month_short(month: str) -> str:
         return month
 
 
+def normalize_google_maps_key(key: str) -> str:
+    """Fix common paste typo: AlzaSy → AIzaSy."""
+    key = (key or "").strip()
+    if key.startswith("AlzaSy"):
+        key = "AIzaSy" + key[6:]
+    return key
+
+
+def google_maps_key_valid(key: str) -> bool:
+    key = normalize_google_maps_key(key)
+    return bool(key) and key.startswith("AIza") and len(key) >= 35
+
+
 def period_filter(period: str) -> tuple[str, str]:
     today = date.today()
     if period == "week":

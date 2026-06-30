@@ -5,8 +5,11 @@
 {% block subtitle %}{% if tab == 'add' %}New inquiry{% elif tab == 'edit' %}Edit booking{% elif tab == 'session' %}Live session{% else %}{{ upcoming|length }} upcoming{% endif %}{% endblock %}
 {% block head %}
 {% if tab == 'add' or tab == 'edit' %}
-{% if cfg.get('google_maps_api_key') %}
-<script src="https://maps.googleapis.com/maps/api/js?key={{ cfg.get('google_maps_api_key') }}&libraries=places"></script>
+{% set gkey = cfg.get('google_maps_api_key','') %}
+{% if gkey %}
+<script>window.gmuMapsConfig={googleKey:{{ gkey|tojson }}};</script>
+<script src="{{ static_url('js/location-maps-bootstrap.js') }}?v=1"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ gkey }}&libraries=places&callback=gmuInitGoogleMaps"></script>
 {% else %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 {% endif %}
@@ -156,14 +159,12 @@
 {% if tab == 'add' or tab == 'edit' %}
 <script src="{{ static_url('js/booking-form.js') }}?v=4"></script>
 <script src="{{ static_url('js/booking-calendar.js') }}?v=1"></script>
-{% if cfg.get('google_maps_api_key') %}
-<script src="{{ static_url('js/location-google.js') }}?v=2"></script>
-{% else %}
+{% if not cfg.get('google_maps_api_key') %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="{{ static_url('js/location-picker.js') }}?v=2"></script>
 {% endif %}
 {% elif tab == 'session' %}
 <script src="{{ static_url('js/receipt-share.js') }}?v=1"></script>
-<script src="{{ static_url('js/session-timer.js') }}?v=5"></script>
+<script src="{{ static_url('js/session-timer.js') }}?v=6"></script>
 {% endif %}
 {% endblock %}

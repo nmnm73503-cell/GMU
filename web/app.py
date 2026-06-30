@@ -18,6 +18,7 @@ from helpers import (
     get_split_pcts,
     has_custom_logo,
     logo_url,
+    normalize_google_maps_key,
     resolve_date_range,
     safe_redirect,
     static_url,
@@ -1221,7 +1222,7 @@ async def settings_save(
         "tagline": tagline, "phone": phone, "instagram": instagram,
         "currency": currency, "receipt_footer": receipt_footer,
         "primary_color": primary_color, "accent_color": accent_color,
-        "google_maps_api_key": google_maps_api_key.strip(),
+        "google_maps_api_key": normalize_google_maps_key(google_maps_api_key),
     }.items():
         set_setting(k, v)
     return RedirectResponse(url("/settings?saved=1"), status_code=303)

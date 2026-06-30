@@ -257,7 +257,7 @@
       '<div class="receipt-line receipt-total"><span>Total</span><span>' +
       fmtMoney(grand, cfg.currency) + "</span></div>" +
       '<button type="button" class="btn btn-primary session-share-btn" data-share-receipt="' +
-      id + '">Share PNG</button></article>"
+      id + '">Share PNG</button></article>'
     );
   }
 
