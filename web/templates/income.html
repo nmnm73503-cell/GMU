@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% set active = 'more' %}
+{% block title %}Income Split{% endblock %}
+{% block header %}Income Split{% endblock %}
+{% block subtitle %}{{ range_start }} → {{ range_end }}{% endblock %}
+{% block content %}
+{% if request.query_params.get('saved') %}<div class="alert">Split percentages saved.</div>{% endif %}
+{% include 'partials/date_filter.html' %}
+<div class="period-pills">
+  <a href="{{ url('/income') }}?period=week" class="{% if period == 'week' %}active{% endif %}">Week</a>
+  <a href="{{ url('/income') }}?period=month" class="{% if period == 'month' %}active{% endif %}">Month</a>
+  <a href="{{ url('/income') }}?period=year" class="{% if period == 'year' %}active{% endif %}">Year</a>
+  <a href="{{ url('/income') }}?period=all" class="{% if period == 'all' %}active{% endif %}">All</a>
+</div>
+
+<section class="glass split-panel">
+  <p class="section-title" style="margin-top:0">Your split targets</p>
+  <form method="post" action="{{ url('/income/split') }}" class="split-form">
+    <div class="split-sliders">
+      <label><span>Savings</span><input name="split_savings_pct" type="number" min="0" max="100" step="1" value="{{ pcts['savings']|int }}"><em>%</em></label>
+      <label><span>Business</span><input name="split_business_pct" type="number" min="0" max="100" step="1" value="{{ pcts['business']|int }}"><em>%</em></label>
+      <label><span>Personal</span><input name="split_personal_pct" type="number" min="0" max="100" step="1" value="{{ pcts['personal']|int }}"><em>%</em></label>
+    </div>
+    <div class="split-bar" aria-hidden="true">
+      <span style="width:{{ pcts['savings'] }}%" class="seg-savings"></span>
+      <span style="width:{{ pcts['business'] }}%" class="seg-business"></span>
+      <span style="width:{{ pcts['personal'] }}%" class="seg-personal"></span>
+    </div>
+    <button type="submit" class="btn btn-accent" style="width:100%;margin-top:0.75rem">Save percentages</button>
+  </form>
+</section>
+
+<div class="stat-grid">
+  <div class="stat-card glass highlight-stat"><div class="label">Earned</div><div class="value">{{ fmt_money(totals['earned']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Savings</div><div class="value">{{ fmt_money(totals['savings']) }}</div><div class="sub-stat">Target {{ fmt_money(target['savings']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Business</div><div class="value">{{ fmt_money(totals['business']) }}</div><div class="sub-stat">Target {{ fmt_money(target['business']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Personal</div><div class="value">{{ fmt_money(totals['personal']) }}</div><div class="sub-stat">Target {{ fmt_money(target['personal']) }}</div></div>
+</div>
+<div class="stat-grid stat-grid-secondary">
+  <div class="stat-card glass"><div class="label">Drawings</div><div class="value value-sm">{{ fmt_money(totals['drawings']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Savings rate</div><div class="value value-sm">{% if totals['earned'] %}{{ fmt_pct(totals['savings'] / totals['earned'] * 100) }}{% else %}—{% endif %}</div></div>
+</div>
+
+<section class="glass notes-panel">
+  <p class="section-title" style="margin-top:0">Notes & reminders</p>
+  <form method="post" action="{{ url('/notes/add') }}" class="note-add-form">
+    <input type="hidden" name="category" value="income">
+    <input type="hidden" name="redirect_to" value="/income">
+    <textarea name="body" rows="2" placeholder="Remember: restock foundation, savings goal…" required></textarea>
+    <button type="submit" class="btn btn-primary">Add note</button>
+  </form>
+  {% for n in notes %}
+  <div class="note-item">
+    <p>{{ n['body'] }}</p>
+    <div class="note-meta">
+      <span>{{ n['created_at'][:10] if n['created_at'] else '' }}</span>
+      <form method="post" action="{{ url('/notes/' ~ n['id'] ~ '/delete') }}">
+        <input type="hidden" name="redirect_to" value="/income">
+        <button type="submit" class="note-delete">Delete</button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <p class="empty-state" style="padding:0.5rem 0">No notes yet — jot down anything you need to remember.</p>
+  {% endfor %}
+</section>
+
+<p class="section-title">Daily allocations</p>
+{% for r in rows %}
+<div class="list-item glass">
+  <div><strong>{{ r['date'] or '—' }}</strong><div class="sub">Save {{ fmt_money(r['savings']) }} · Biz {{ fmt_money(r['business']) }} · Personal {{ fmt_money(r['personal']) }}</div></div>
+  <span class="amount">{{ fmt_money(r['total_earned']) }}</span>
+</div>
+{% else %}
+<p class="empty-state">No allocation records in this range.</p>
+{% endfor %}
+{% endblock %}

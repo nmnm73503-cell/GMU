@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% set active = 'analytics' %}
+{% block title %}Insights{% endblock %}
+{% block header %}Insights{% endblock %}
+{% block subtitle %}{{ start }} → {{ end }}{% endblock %}
+{% block content %}
+{% include 'partials/date_filter.html' %}
+<div class="period-pills">
+  <a href="{{ url('/analytics') }}?period=week" class="{% if period == 'week' %}active{% endif %}">Week</a>
+  <a href="{{ url('/analytics') }}?period=month" class="{% if period == 'month' %}active{% endif %}">Month</a>
+  <a href="{{ url('/analytics') }}?period=half" class="{% if period == 'half' %}active{% endif %}">6 Mo</a>
+  <a href="{{ url('/analytics') }}?period=year" class="{% if period == 'year' %}active{% endif %}">Year</a>
+  <a href="{{ url('/analytics') }}?period=all" class="{% if period == 'all' %}active{% endif %}">All</a>
+</div>
+
+<p class="section-title" style="margin-top:0">Period overview</p>
+<div class="stat-grid">
+  <div class="stat-card glass"><div class="label">Total revenue</div><div class="value">{{ fmt_money(summary['revenue']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Net profit</div><div class="value">{{ fmt_money(summary['net_profit']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Total expenses</div><div class="value">{{ fmt_money(summary['total_expenses']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Transport costs</div><div class="value">{{ fmt_money(summary['transport']) }}</div></div>
+</div>
+<div class="stat-grid">
+  <div class="stat-card glass"><div class="label">Bookings</div><div class="value">{{ summary['bookings'] }}</div></div>
+  <div class="stat-card glass"><div class="label">Hours worked</div><div class="value">{{ '%.1f'|format(summary['hours']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Hourly rate</div><div class="value">{{ fmt_money(summary['hourly_rate']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Houses visited</div><div class="value">{{ summary['houses'] }}</div></div>
+</div>
+
+<p class="section-title">Income split</p>
+<div class="stat-grid">
+  <div class="stat-card glass"><div class="label">Total earned</div><div class="value">{{ fmt_money(summary['earned']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Savings</div><div class="value">{{ fmt_money(summary['savings']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Business</div><div class="value">{{ fmt_money(summary['business']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Personal</div><div class="value">{{ fmt_money(summary['personal']) }}</div></div>
+</div>
+<div class="stat-grid">
+  <div class="stat-card glass"><div class="label">Drawings</div><div class="value">{{ fmt_money(summary['drawings']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Product expenses</div><div class="value">{{ fmt_money(summary['business_expenses']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Daily alloc. expenses</div><div class="value">{{ fmt_money(summary['alloc_expenses']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Unique clients</div><div class="value">{{ summary['unique_clients'] }}</div></div>
+</div>
+
+<p class="section-title">KPIs</p>
+<div class="stat-grid">
+  <div class="stat-card glass"><div class="label">Avg people / house</div><div class="value">{{ '%.1f'|format(summary['avg_people_per_house']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Avg daily expense</div><div class="value">{{ fmt_money(summary['avg_daily_expense']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Avg profit / service</div><div class="value">{{ fmt_money(summary['avg_profit_per_service']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Avg revenue / house</div><div class="value">{{ fmt_money(summary['avg_revenue_per_house']) }}</div></div>
+</div>
+<div class="stat-grid">
+  <div class="stat-card glass"><div class="label">Avg bookings / client</div><div class="value">{{ '%.1f'|format(summary['avg_booking_per_client']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Client retention</div><div class="value">{{ fmt_pct(summary['retention_rate']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Top client share</div><div class="value">{{ fmt_pct(summary['revenue_concentration']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Top client</div><div class="value" style="font-size:0.95rem">{{ summary['top_client'] }}</div></div>
+</div>
+<div class="highlight-card glass motion-fade">
+  <span class="label">Best seller</span>
+  <strong>{{ summary['best_seller'] }}</strong>
+</div>
+
+<div class="chart-grid">
+  <div class="chart-wrap glass motion-fade">
+    <p class="section-title" style="margin-top:0">Revenue by month</p>
+    <canvas id="revenueChart" height="180"></canvas>
+  </div>
+  <div class="chart-wrap glass motion-fade">
+    <p class="section-title" style="margin-top:0">Net profit by month</p>
+    <canvas id="profitChart" height="180"></canvas>
+  </div>
+</div>
+<div class="chart-wrap glass motion-fade">
+  <p class="section-title" style="margin-top:0">Income allocation</p>
+  <canvas id="incomeChart" height="160"></canvas>
+</div>
+
+<p class="section-title">Monthly breakdown</p>
+<div class="report-table-wrap glass motion-fade">
+  <table class="report-table">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Revenue</th>
+        <th>Expenses</th>
+        <th>Net</th>
+        <th>Hrs</th>
+        <th>Rate</th>
+        <th>Bookings</th>
+        <th>Houses</th>
+        <th>Avg / house</th>
+        <th>Avg daily exp.</th>
+        <th>Avg profit / svc</th>
+        <th>Avg rev / house</th>
+        <th>Transport</th>
+        <th>Top client</th>
+        <th>Best seller</th>
+        <th>Savings</th>
+        <th>Business</th>
+        <th>Personal</th>
+        <th>Avg bk / client</th>
+        <th>Retention</th>
+        <th>Top share</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in insights['monthly_rows'] %}
+      {% if row['revenue'] > 0 or row['bookings'] > 0 %}
+      <tr>
+        <td>{{ row['label'] }}</td>
+        <td>{{ fmt_money(row['revenue']) }}</td>
+        <td>{{ fmt_money(row['total_expenses']) }}</td>
+        <td>{{ fmt_money(row['net_profit']) }}</td>
+        <td>{{ '%.1f'|format(row['hours']) if row['hours'] else '—' }}</td>
+        <td>{% if row['hourly_rate'] %}{{ fmt_money(row['hourly_rate']) }}{% else %}—{% endif %}</td>
+        <td>{{ row['bookings'] or '—' }}</td>
+        <td>{{ row['houses'] or '—' }}</td>
+        <td>{% if row['houses'] %}{{ '%.1f'|format(row['avg_people_per_house']) }}{% else %}—{% endif %}</td>
+        <td>{{ fmt_money(row['avg_daily_expense']) }}</td>
+        <td>{% if row['bookings'] %}{{ fmt_money(row['avg_profit_per_service']) }}{% else %}—{% endif %}</td>
+        <td>{% if row['houses'] %}{{ fmt_money(row['avg_revenue_per_house']) }}{% else %}—{% endif %}</td>
+        <td>{{ fmt_money(row['transport']) }}</td>
+        <td>{{ row['top_client'] }}</td>
+        <td>{{ row['best_seller'] }}</td>
+        <td>{{ fmt_money(row['savings_account']) }}</td>
+        <td>{{ fmt_money(row['business_account']) }}</td>
+        <td>{{ fmt_money(row['personal_account']) }}</td>
+        <td>{% if row['bookings'] %}{{ '%.1f'|format(row['avg_booking_per_client']) }}{% else %}—{% endif %}</td>
+        <td>{% if row['bookings'] %}{{ fmt_pct(row['retention_rate']) }}{% else %}—{% endif %}</td>
+        <td>{% if row['revenue'] %}{{ fmt_pct(row['revenue_concentration']) }}{% else %}—{% endif %}</td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<section class="motion-section">
+<p class="section-title">Top clients</p>
+{% for c in insights['top_clients'] %}
+<div class="list-item glass">
+  <div><strong>{{ c['client_name'] }}</strong><div class="sub">{{ c['cnt'] }} booking{{ 's' if c['cnt'] != 1 else '' }}</div></div>
+  <span class="amount">{{ fmt_money(c['total']) }}</span>
+</div>
+{% else %}
+<p style="color:var(--muted);font-size:0.85rem;padding:0.5rem">No clients in this range.</p>
+{% endfor %}
+</section>
+
+<section class="motion-section">
+<p class="section-title">By service style</p>
+{% for s in insights['by_style'] %}
+<div class="list-item glass">
+  <div>
+    <strong>{{ (s['service_style'] or 'other')|title }}{% if s['headcount_tier'] %} ({{ s['headcount_tier'] }}){% endif %}</strong>
+    <div class="sub">{{ s['cnt'] }} bookings</div>
+  </div>
+  <span class="amount">{{ fmt_money(s['total']) }}</span>
+</div>
+{% else %}
+<p style="color:var(--muted);font-size:0.85rem;padding:0.5rem">No services in this range.</p>
+{% endfor %}
+</section>
+
+<section class="motion-section">
+<p class="section-title">By payment method</p>
+{% for p in insights['by_payment'] %}
+<div class="list-item glass">
+  <div><strong>{{ payment_label(p['payment_method']) }}</strong><div class="sub">{{ p['cnt'] }} payments</div></div>
+  <span class="amount">{{ fmt_money(p['total']) }}</span>
+</div>
+{% else %}
+<p style="color:var(--muted);font-size:0.85rem;padding:0.5rem">No payments in this range.</p>
+{% endfor %}
+</section>
+
+{% if insights['expense_categories'] %}
+<section class="motion-section">
+<p class="section-title">Business expenses by category</p>
+{% for e in insights['expense_categories'] %}
+<div class="list-item glass">
+  <div><strong>{{ (e['category'] or 'other')|replace('_',' ')|title }}</strong><div class="sub">{{ e['cnt'] }} entries</div></div>
+  <span class="amount">{{ fmt_money(e['total']) }}</span>
+</div>
+{% endfor %}
+</section>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+(function(){
+  var revLabels = {{ insights['revenue_by_month'] | map(attribute='m') | list | tojson }};
+  var revValues = {{ insights['revenue_by_month'] | map(attribute='total') | list | tojson }};
+  var profitLabels = {{ insights['profit_by_month'] | map(attribute='m') | list | tojson }};
+  var profitValues = {{ insights['profit_by_month'] | map(attribute='net') | list | tojson }};
+  var incomeValues = {{ [summary['savings'], summary['business'], summary['personal'], summary['drawings']] | tojson }};
+  var charts = [];
+  function colors() {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return {
+      bar: dark ? '#FFFFFF' : '#000000',
+      barAlt: dark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.35)',
+      grid: dark ? 'rgba(152,152,168,0.15)' : 'rgba(26,26,46,0.08)',
+      tick: dark ? '#9898A8' : '#6B6B7B'
+    };
+  }
+  function destroyAll() {
+    charts.forEach(function(c){ c.destroy(); });
+    charts = [];
+  }
+  function build() {
+    var c = colors();
+    destroyAll();
+    var baseOpts = {
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, grid: { color: c.grid }, ticks: { color: c.tick } },
+        x: { grid: { display: false }, ticks: { color: c.tick, maxRotation: 45 } }
+      }
+    };
+    charts.push(new Chart(document.getElementById('revenueChart'), {
+      type: 'bar',
+      data: { labels: revLabels, datasets: [{ data: revValues, backgroundColor: c.bar, borderRadius: 6 }] },
+      options: baseOpts
+    }));
+    charts.push(new Chart(document.getElementById('profitChart'), {
+      type: 'bar',
+      data: { labels: profitLabels, datasets: [{ data: profitValues, backgroundColor: c.barAlt, borderRadius: 6 }] },
+      options: baseOpts
+    }));
+    charts.push(new Chart(document.getElementById('incomeChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Savings', 'Business', 'Personal', 'Drawings'],
+        datasets: [{
+          data: incomeValues.map(function(v){ return Math.max(0, v); }),
+          backgroundColor: [c.bar, c.barAlt, c.tick, c.grid],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom', labels: { color: c.tick, boxWidth: 10, font: { size: 11 } } }
+        }
+      }
+    }));
+  }
+  build();
+  window.addEventListener('gmu-theme-change', build);
+})();
+</script>
+{% endblock %}

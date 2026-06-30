@@ -1,0 +1,22 @@
+{# Reusable receipt card — id="receipt-share-target" for html2canvas #}
+<article class="receipt-page glass receipt-share-card" id="receipt-share-target" data-receipt-no="{{ receipt_no }}">
+  <div class="receipt-logo">
+    {% with width=180, height=46 %}{% include 'partials/logo.html' %}{% endwith %}
+  </div>
+  <p class="receipt-subtitle">
+    {{ cfg.get('artist_name', 'Nawal') }} · {{ cfg.get('tagline', '') }}
+  </p>
+  <div class="receipt-line"><span>Receipt #</span><span>{{ receipt_no }}</span></div>
+  <div class="receipt-line"><span>Date</span><span>{{ appt['date'] }}</span></div>
+  <div class="receipt-line"><span>Client</span><span>{{ appt['client_name'] }}</span></div>
+  <div class="receipt-line"><span>Service</span><span>{{ appt['service_style'] or 'Makeup' }}</span></div>
+  <div class="receipt-line"><span>Time</span><span>{{ appt['start_time'] or '—' }} – {{ appt['end_time'] or '—' }}</span></div>
+  <div class="receipt-line"><span>Base rate</span><span>{{ fmt_money(appt['revenue']) }}</span></div>
+  {% if appt['transport_cost'] %}
+  <div class="receipt-line"><span>Travel fee</span><span>{{ fmt_money(appt['transport_cost']) }}</span></div>
+  {% endif %}
+  <div class="receipt-line receipt-total"><span>Total</span><span>{{ fmt_money(appt['revenue'] + appt['transport_cost']) }}</span></div>
+  <div class="receipt-line"><span>Payment</span><span>{{ payment_label(appt['payment_method']) if appt['payment_method'] else 'Cash' }}</span></div>
+  <p class="receipt-footer">{{ cfg.get('receipt_footer', '') }}</p>
+  {% if cfg.get('instagram') %}<p class="receipt-instagram">@{{ cfg.instagram }}</p>{% endif %}
+</article>

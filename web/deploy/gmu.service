@@ -1,0 +1,17 @@
+[Unit]
+Description=Glam Me Upp Studio (GMU web)
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/glam-me-upp/web
+Environment=GMU_BASE_PATH=/gmu
+Environment=GMU_PUBLIC_URL=https://munasdream.mooo.com/gmu
+Environment=PATH=/opt/glam-me-upp/web/venv/bin
+ExecStart=/opt/glam-me-upp/web/venv/bin/uvicorn app:app --host 127.0.0.1 --port 8081
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

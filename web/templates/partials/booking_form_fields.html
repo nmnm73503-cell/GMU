@@ -1,0 +1,96 @@
+{# Shared booking form — used inside Bookings tab only #}
+<form method="post"
+      action="{% if appt %}{{ url('/bookings/' ~ appt['id'] ~ '/edit') }}{% else %}{{ url('/bookings/new') }}{% endif %}"
+      enctype="multipart/form-data"
+      class="settings-form glass motion-fade booking-form-panel">
+  <label>Client *</label>
+  <select name="client_id" required>
+    {% for c in clients %}
+    <option value="{{ c['id'] }}" {% if appt and appt['client_id'] == c['id'] %}selected{% endif %}>{{ c['name'] }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Service package</label>
+  <select id="service-package" name="package_id">
+    {% for cat, items in packages_grouped.items() %}
+    <optgroup label="{{ category_labels.get(cat, cat|title) }}">
+      {% for pkg in items %}
+      {% if pkg['active'] %}
+      <option value="{{ pkg['id'] }}"
+              data-price="{{ pkg['price']|int }}"
+              data-style="{{ pkg['service_style'] }}"
+              data-tier="{{ pkg['headcount_tier'] }}"
+              {% if selected_package == pkg['id'] %}selected{% endif %}>
+        {{ pkg['label'] }}{% if pkg['price'] %} — {{ fmt_money(pkg['price']) }}{% else %} — enter amount{% endif %}
+      </option>
+      {% endif %}
+    {% endfor %}
+    </optgroup>
+    {% endfor %}
+  </select>
+
+  <label>Date *</label>
+  <input name="date" type="date" required value="{{ appt['date'] if appt else '' }}">
+
+  <label>Start / End</label>
+  <div class="inline-fields">
+    <select name="start_time" id="start-time-select">
+      <option value="">—</option>
+      {% for slot in time_slots %}
+      <option value="{{ slot }}" {% if appt and appt['start_time'] == slot %}selected{% endif %}>{{ slot }}</option>
+      {% endfor %}
+    </select>
+    <select name="end_time" id="end-time-select">
+      <option value="">—</option>
+      {% for slot in time_slots %}
+      <option value="{{ slot }}" {% if appt and appt['end_time'] == slot %}selected{% endif %}>{{ slot }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <input type="hidden" id="service-style-input" name="service_style" value="{{ appt['service_style'] if appt else '' }}">
+  <input type="hidden" id="headcount-tier-input" name="headcount_tier" value="{{ appt['headcount_tier'] if appt else '' }}">
+
+  <label>Revenue ({{ get_setting('currency','TZS') }})</label>
+  <input id="revenue-input" name="revenue" type="number" step="1000" min="0"
+         value="{{ appt['revenue'] if appt else '' }}">
+
+  <label>Travel cost</label>
+  <input name="transport_cost" type="number" step="1000" min="0"
+         value="{{ appt['transport_cost'] if appt else 0 }}">
+
+  <label>Payment</label>
+  <select name="payment_method">
+    {% set pm = appt['payment_method'] if appt else 'cash' %}
+    {% if pm == 'mpesa' %}{% set pm = 'mobile_money' %}{% endif %}
+    {% for value, label in payment_methods %}
+    <option value="{{ value }}" {% if pm == value or (not appt and value == 'cash') %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Status</label>
+  <select name="status">
+    {% for s in ['inquiry', 'confirmed', 'deposit_paid', 'completed', 'cancelled'] %}
+    <option value="{{ s }}" {% if appt and appt['status'] == s %}selected{% elif not appt and s == 'confirmed' %}selected{% endif %}>
+      {{ s.replace('_', ' ').title() }}
+    </option>
+    {% endfor %}
+  </select>
+
+  <label>Photo <span class="label-hint">(optional)</span></label>
+  {% if appt and appt['photo_path'] %}
+  <img src="{{ appt['photo_path'] }}" alt="Booking photo" class="booking-photo-preview">
+  {% endif %}
+  <input name="photo" type="file" accept="image/*">
+
+  <button type="submit" class="btn btn-primary">{% if appt %}Save changes{% else %}Save booking{% endif %}</button>
+</form>
+{% if appt %}
+<form method="post"
+      action="{{ url('/bookings/' ~ appt['id'] ~ '/delete') }}"
+      class="delete-form"
+      onsubmit="return confirm('Delete this booking? This cannot be undone.')">
+  <input type="hidden" name="redirect_to" value="{{ delete_redirect or (url('/bookings') ~ '?tab=upcoming') }}">
+  <button type="submit" class="btn-delete">Delete booking</button>
+</form>
+{% endif %}

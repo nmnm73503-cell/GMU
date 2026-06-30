@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% set active = 'home' %}
+{% block title %}Dashboard — {{ get_setting('business_name') }}{% endblock %}
+{% block header %}{{ get_setting('business_name', 'Glam Me Upp') }}{% endblock %}
+{% block subtitle %}{{ get_setting('artist_name', 'Nawal') }}{% endblock %}
+{% block content %}
+<section class="hero-panel glass motion-hero">
+  {% with hero=true, width=200, height=52 %}{% include 'partials/logo.html' %}{% endwith %}
+  <p class="hero-sub motion-hero-text">{{ get_setting('tagline', '') }}</p>
+</section>
+
+<div class="quick-actions">
+  <a href="{{ url('/bookings') }}?tab=add" class="quick-action glass interactive">+ Add</a>
+  <a href="{{ url('/bookings') }}?tab=upcoming" class="quick-action glass interactive">{{ upcoming_n }} Upcoming</a>
+  <a href="{{ url('/income') }}" class="quick-action glass interactive">Income split</a>
+</div>
+
+{% include 'partials/date_filter.html' %}
+<div class="period-pills">
+  <a href="{{ url('/') }}?period=week" class="{% if period == 'week' %}active{% endif %}">Week</a>
+  <a href="{{ url('/') }}?period=month" class="{% if period == 'month' %}active{% endif %}">Month</a>
+  <a href="{{ url('/') }}?period=half" class="{% if period == 'half' %}active{% endif %}">6 Mo</a>
+  <a href="{{ url('/') }}?period=year" class="{% if period == 'year' %}active{% endif %}">Year</a>
+  <a href="{{ url('/') }}?period=all" class="{% if period == 'all' %}active{% endif %}">All</a>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card glass highlight-stat"><div class="label">Revenue</div><div class="value">{{ fmt_money(stats['revenue']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Net profit</div><div class="value">{{ fmt_money(stats['net_profit']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Bookings</div><div class="value">{{ stats['bookings'] }}</div></div>
+  <div class="stat-card glass"><div class="label">Upcoming</div><div class="value">{{ upcoming_n }}</div></div>
+</div>
+<div class="stat-grid stat-grid-secondary">
+  <div class="stat-card glass"><div class="label">Clients</div><div class="value value-sm">{{ stats['clients'] }}</div></div>
+  <div class="stat-card glass"><div class="label">Travel</div><div class="value value-sm">{{ fmt_money(stats['travel']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Hourly rate</div><div class="value value-sm">{% if stats['hours'] %}{{ fmt_money(stats['revenue'] / stats['hours']) }}{% else %}—{% endif %}</div></div>
+  <div class="stat-card glass"><div class="label">Cash share</div><div class="value value-sm">{% if stats['revenue'] %}{{ fmt_pct(cash_total / stats['revenue'] * 100) }}{% else %}—{% endif %}</div></div>
+</div>
+{% if stats['bookings'] %}
+<div class="stat-grid stat-grid-secondary">
+  <div class="stat-card glass"><div class="label">Avg booking</div><div class="value value-sm">{{ fmt_money(stats['revenue'] / stats['bookings']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Margin</div><div class="value value-sm">{% if stats['revenue'] %}{{ fmt_pct(stats['net_profit'] / stats['revenue'] * 100) }}{% else %}—{% endif %}</div></div>
+  <div class="stat-card glass"><div class="label">Target savings</div><div class="value value-sm">{{ fmt_money(split_target['savings']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Target personal</div><div class="value value-sm">{{ fmt_money(split_target['personal']) }}</div></div>
+</div>
+{% endif %}
+
+<section class="glass rate-card-section motion-section">
+  <p class="section-title" style="margin-top:0">Rate card</p>
+  <div class="rate-card-grid rate-card-grid-compact">
+    {% for pkg in packages[:4] %}
+    {% if pkg['id'] != 'custom' %}
+    <div class="rate-card-item">
+      <div class="rate-card-name">{{ pkg['label'] }}</div>
+      <div class="rate-card-price">{{ fmt_money(pkg['price']) }}</div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  <a href="{{ url('/rate-card') }}" class="btn btn-accent" style="display:block;margin-top:0.75rem;text-align:center;font-size:0.85rem">Full menu →</a>
+</section>
+
+{% if service_mix %}
+<p class="section-title">Service mix</p>
+<div class="motion-stagger">
+{% for row in service_mix %}
+<div class="list-item glass">
+  <div>
+    <strong>{{ row['service_style']|title or 'Other' }}{% if row['headcount_tier'] %} · {{ row['headcount_tier'] }}{% endif %}</strong>
+    <div class="sub">{{ row['cnt'] }} booking{{ 's' if row['cnt'] != 1 else '' }}</div>
+  </div>
+  <span class="amount">{{ fmt_money(row['total']) }}</span>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+<p class="section-title">Recent bookings</p>
+<div class="motion-stagger">
+{% for a in recent %}
+<a href="{{ url('/clients/' ~ (a['client_id'] or 0)) }}" class="list-item glass interactive">
+  <div><strong>{{ a['client_name'] }}</strong><div class="sub">{{ a['date'] }} · {{ a['service_style'] or 'makeup' }}{% if a['headcount_tier'] %} · {{ a['headcount_tier'] }}{% endif %}</div></div>
+  <span class="amount">{{ fmt_money(a['revenue']) }}</span>
+</a>
+{% else %}
+<p class="empty-state">No bookings in this range.</p>
+{% endfor %}
+</div>
+
+<p class="section-title">Top clients</p>
+<div class="motion-stagger">
+{% for c in top_clients %}
+{% if c['lifetime_value'] > 0 %}
+<a href="{{ url('/clients/' ~ c['id']) }}" class="list-item glass interactive">
+  <div><strong>{{ c['name'] }}</strong></div>
+  <span class="amount">{{ fmt_money(c['lifetime_value']) }}</span>
+</a>
+{% endif %}
+{% else %}
+<p class="empty-state">No client revenue in this range.</p>
+{% endfor %}
+</div>
+{% endblock %}

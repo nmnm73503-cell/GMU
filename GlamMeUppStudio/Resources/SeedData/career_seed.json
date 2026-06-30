@@ -1,0 +1,2393 @@
+{
+  "version": 1,
+  "source": "My Career.ods",
+  "exportedAt": "2026-06-29T21:49:36.541059",
+  "clients": [
+    {
+      "name": "Adiba",
+      "leadSource": "referral"
+    },
+    {
+      "name": "Ammar Gammar",
+      "leadSource": "referral"
+    },
+    {
+      "name": "Azza",
+      "leadSource": "referral"
+    },
+    {
+      "name": "Bugle",
+      "leadSource": "referral"
+    },
+    {
+      "name": "Customer Mikocheni",
+      "leadSource": "referral"
+    },
+    {
+      "name": "Leila",
+      "leadSource": "referral"
+    },
+    {
+      "name": "Mahsen",
+      "leadSource": "referral"
+    },
+    {
+      "name": "Mammy Ahmed",
+      "leadSource": "referral"
+    },
+    {
+      "name": "N. Al-Mahri",
+      "leadSource": "referral"
+    },
+    {
+      "name": "N.A",
+      "leadSource": "referral"
+    },
+    {
+      "name": "Saliha",
+      "leadSource": "referral"
+    },
+    {
+      "name": "Zainab ali",
+      "leadSource": "referral"
+    }
+  ],
+  "appointments": [
+    {
+      "date": "2026-01-03",
+      "clientName": "N. Al-Mahri",
+      "serviceStyle": "simple",
+      "headcountTier": "1-2",
+      "startTime": "07:00 PM",
+      "endTime": "08:00 PM",
+      "durationHours": 1.0,
+      "revenue": 70000.0,
+      "transportCost": 20000.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-09",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "10:00 AM",
+      "endTime": "11:00 AM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 20000.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-09",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "11:00 AM",
+      "endTime": "12:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-09",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "12:00 PM",
+      "endTime": "01:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-09",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "01:00 PM",
+      "endTime": "02:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-09",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "02:00 PM",
+      "endTime": "03:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-09",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "03:00 PM",
+      "endTime": "04:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-09",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "simple",
+      "headcountTier": "3+",
+      "startTime": "04:00 PM",
+      "endTime": "05:00 PM",
+      "durationHours": 1.0,
+      "revenue": 50000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-10",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "01:00 PM",
+      "endTime": "02:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 20000.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-10",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "02:00 PM",
+      "endTime": "03:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-10",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "03:00 PM",
+      "endTime": "04:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-10",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "04:00 PM",
+      "endTime": "05:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-10",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "simple",
+      "headcountTier": "3+",
+      "startTime": "10:00 AM",
+      "endTime": "11:00 AM",
+      "durationHours": 1.0,
+      "revenue": 50000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-11",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "simple",
+      "headcountTier": "3+",
+      "startTime": "11:00 AM",
+      "endTime": "12:00 PM",
+      "durationHours": 1.0,
+      "revenue": 50000.0,
+      "transportCost": 20000.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-11",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "dramatic",
+      "headcountTier": "3+",
+      "startTime": "12:00 PM",
+      "endTime": "01:00 PM",
+      "durationHours": 1.0,
+      "revenue": 70000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-11",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "dramatic",
+      "headcountTier": "3+",
+      "startTime": "01:00 PM",
+      "endTime": "02:00 PM",
+      "durationHours": 1.0,
+      "revenue": 70000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-11",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "02:00 PM",
+      "endTime": "03:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-11",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "03:00 PM",
+      "endTime": "04:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-11",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "04:00 PM",
+      "endTime": "05:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-11",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "05:00 PM",
+      "endTime": "06:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-11",
+      "clientName": "Ammar Gammar",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "06:00 PM",
+      "endTime": "07:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-24",
+      "clientName": "Customer Mikocheni",
+      "serviceStyle": "dramatic",
+      "headcountTier": "1-2",
+      "startTime": "06:00 PM",
+      "endTime": "07:00 PM",
+      "durationHours": 1.0,
+      "revenue": 90000.0,
+      "transportCost": 10000.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-24",
+      "clientName": "Mahsen",
+      "serviceStyle": "dramatic",
+      "headcountTier": "1-2",
+      "startTime": "04:00 PM",
+      "endTime": "05:00 PM",
+      "durationHours": 1.0,
+      "revenue": 90000.0,
+      "transportCost": 20000.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-31",
+      "clientName": "Leila",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "02:00 PM",
+      "endTime": "03:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 15000.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-31",
+      "clientName": "Leila",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "03:00 PM",
+      "endTime": "04:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-31",
+      "clientName": "Leila",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "04:00 PM",
+      "endTime": "05:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-31",
+      "clientName": "Leila",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "05:00 PM",
+      "endTime": "06:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-01-31",
+      "clientName": "Leila",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "06:00 PM",
+      "endTime": "07:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-02-01",
+      "clientName": "Azza",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "04:00 PM",
+      "endTime": "05:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 1000.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-02-01",
+      "clientName": "Azza",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "05:00 PM",
+      "endTime": "06:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-02-01",
+      "clientName": "Azza",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "06:00 PM",
+      "endTime": "07:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-02-01",
+      "clientName": "Azza",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "07:00 PM",
+      "endTime": "08:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-02-01",
+      "clientName": "Azza",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "08:00 PM",
+      "endTime": "09:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-02-01",
+      "clientName": "Azza",
+      "serviceStyle": "soft",
+      "headcountTier": "1-2",
+      "startTime": "-",
+      "endTime": "-",
+      "durationHours": 1.0,
+      "revenue": 0.0,
+      "transportCost": 0.0,
+      "paymentMethod": "other",
+      "leadSource": "referral",
+      "status": "cancelled"
+    },
+    {
+      "date": "2026-02-02",
+      "clientName": "N.A",
+      "serviceStyle": "soft",
+      "headcountTier": "1-2",
+      "startTime": "04:00 PM",
+      "endTime": "05:00 PM",
+      "durationHours": 1.0,
+      "revenue": 80000.0,
+      "transportCost": 10000.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-02-07",
+      "clientName": "Saliha",
+      "serviceStyle": "soft",
+      "headcountTier": "1-2",
+      "startTime": "06:00 PM",
+      "endTime": "07:00 PM",
+      "durationHours": 1.0,
+      "revenue": 80000.0,
+      "transportCost": 10000.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-02-07",
+      "clientName": "Bugle",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "02:00 PM",
+      "endTime": "03:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-03-30",
+      "clientName": "Zainab ali",
+      "serviceStyle": "simple",
+      "headcountTier": "1-2",
+      "startTime": "06:00 PM",
+      "endTime": "07:00 PM",
+      "durationHours": 1.0,
+      "revenue": 70000.0,
+      "transportCost": 30000.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-02",
+      "clientName": "Adiba",
+      "serviceStyle": "simple",
+      "headcountTier": "1-2",
+      "startTime": "02:00 PM",
+      "endTime": "04:00 PM",
+      "durationHours": 2.0,
+      "revenue": 70000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-02",
+      "clientName": "Customer Mikocheni",
+      "serviceStyle": "soft",
+      "headcountTier": "1-2",
+      "startTime": "06:00 PM",
+      "endTime": "07:00 PM",
+      "durationHours": 1.0,
+      "revenue": 80000.0,
+      "transportCost": 30000.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-03",
+      "clientName": "Mammy Ahmed",
+      "serviceStyle": "simple",
+      "headcountTier": "3+",
+      "startTime": "09:00 AM",
+      "endTime": "09:30 AM",
+      "durationHours": 0.5,
+      "revenue": 50000.0,
+      "transportCost": 15000.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-03",
+      "clientName": "Mammy Ahmed",
+      "serviceStyle": "simple",
+      "headcountTier": "3+",
+      "startTime": "09:30 AM",
+      "endTime": "10:00 AM",
+      "durationHours": 0.5,
+      "revenue": 50000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-03",
+      "clientName": "Mammy Ahmed",
+      "serviceStyle": "simple",
+      "headcountTier": "3+",
+      "startTime": "10:00 AM",
+      "endTime": "10:30 AM",
+      "durationHours": 0.5,
+      "revenue": 50000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-04",
+      "clientName": "Mammy Ahmed",
+      "serviceStyle": "simple",
+      "headcountTier": "3+",
+      "startTime": "11:00 AM",
+      "endTime": "12:00 PM",
+      "durationHours": 0.5,
+      "revenue": 50000.0,
+      "transportCost": 15000.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-04",
+      "clientName": "Mammy Ahmed",
+      "serviceStyle": "simple",
+      "headcountTier": "3+",
+      "startTime": "12:00 PM",
+      "endTime": "01:00 PM",
+      "durationHours": 1.0,
+      "revenue": 50000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-04",
+      "clientName": "Mammy Ahmed",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "02:00 PM",
+      "endTime": "03:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "mpesa",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-04",
+      "clientName": "Mammy Ahmed",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "06:00 PM",
+      "endTime": "07:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-04",
+      "clientName": "Mammy Ahmed",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "07:00 PM",
+      "endTime": "08:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-04",
+      "clientName": "Mammy Ahmed",
+      "serviceStyle": "soft",
+      "headcountTier": "3+",
+      "startTime": "08:00 PM",
+      "endTime": "09:00 PM",
+      "durationHours": 1.0,
+      "revenue": 60000.0,
+      "transportCost": 0.0,
+      "paymentMethod": "cash",
+      "leadSource": "referral",
+      "status": "completed"
+    }
+  ],
+  "expenses": [
+    {
+      "date": "2026-01-10",
+      "category": "productRestock",
+      "categoryLabel": "Product Restock",
+      "amount": 100000.0,
+      "description": ""
+    },
+    {
+      "date": "2026-02-01",
+      "category": "productRestock",
+      "categoryLabel": "Product Restock",
+      "amount": 14000.0,
+      "description": "Beauty Blender"
+    },
+    {
+      "date": "2026-03-30",
+      "category": "productRestock",
+      "categoryLabel": "Product Restock",
+      "amount": 91000.0,
+      "description": "Beauty Blender (8pcs), Powder packs (2pcs), Eyelashes (7 packs)"
+    },
+    {
+      "date": "2026-04-04",
+      "category": "productRestock",
+      "categoryLabel": "Product Restock",
+      "amount": 106000.0,
+      "description": "Foundation (2pcs), Bronzer powder, Eyelash"
+    },
+    {
+      "date": "2026-04-05",
+      "category": "equipment",
+      "categoryLabel": "Equipment",
+      "amount": 522500.0,
+      "description": "The snake ate its tail"
+    }
+  ],
+  "dailySummaries": [
+    {
+      "date": "2026-01-03",
+      "totalRevenue": 70000.0,
+      "totalExpenses": 0.0,
+      "netProfit": 70000.0
+    },
+    {
+      "date": "2026-01-04",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-05",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-06",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-07",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-08",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-09",
+      "totalRevenue": 410000.0,
+      "totalExpenses": 0.0,
+      "netProfit": 410000.0
+    },
+    {
+      "date": "2026-01-10",
+      "totalRevenue": 290000.0,
+      "totalExpenses": 100000.0,
+      "netProfit": 190000.0
+    },
+    {
+      "date": "2026-01-11",
+      "totalRevenue": 490000.0,
+      "totalExpenses": 0.0,
+      "netProfit": 490000.0
+    },
+    {
+      "date": "2026-01-12",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-13",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-14",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-15",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-16",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-17",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-18",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-19",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-20",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-21",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-22",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-23",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-24",
+      "totalRevenue": 180000.0,
+      "totalExpenses": 0.0,
+      "netProfit": 180000.0
+    },
+    {
+      "date": "2026-01-25",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-26",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-27",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-28",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-29",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-30",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-01-31",
+      "totalRevenue": 300000.0,
+      "totalExpenses": 0.0,
+      "netProfit": 300000.0
+    },
+    {
+      "date": "2026-02-01",
+      "totalRevenue": 300000.0,
+      "totalExpenses": 14000.0,
+      "netProfit": 286000.0
+    },
+    {
+      "date": "2026-02-02",
+      "totalRevenue": 80000.0,
+      "totalExpenses": 0.0,
+      "netProfit": 80000.0
+    },
+    {
+      "date": "2026-02-03",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-04",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-05",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-06",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-07",
+      "totalRevenue": 140000.0,
+      "totalExpenses": 0.0,
+      "netProfit": 140000.0
+    },
+    {
+      "date": "2026-02-08",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-09",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-10",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-11",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-12",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-13",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-14",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-15",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-16",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-17",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-18",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-19",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-20",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-21",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-22",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-23",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-24",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-25",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-26",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-27",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-02-28",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-01",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-02",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-03",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-04",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-05",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-06",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-07",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-08",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-09",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-10",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-11",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-12",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-13",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-14",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-15",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-16",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-17",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-18",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-19",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-20",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-21",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-22",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-23",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-24",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-25",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-26",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-27",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-28",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-29",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-03-30",
+      "totalRevenue": 70000.0,
+      "totalExpenses": 91000.0,
+      "netProfit": -21000.0
+    },
+    {
+      "date": "2026-03-31",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-01",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-02",
+      "totalRevenue": 150000.0,
+      "totalExpenses": 0.0,
+      "netProfit": 150000.0
+    },
+    {
+      "date": "2026-04-03",
+      "totalRevenue": 150000.0,
+      "totalExpenses": 0.0,
+      "netProfit": 150000.0
+    },
+    {
+      "date": "2026-04-04",
+      "totalRevenue": 340000.0,
+      "totalExpenses": 106000.0,
+      "netProfit": 234000.0
+    },
+    {
+      "date": "2026-04-05",
+      "totalRevenue": 0.0,
+      "totalExpenses": 522500.0,
+      "netProfit": -522500.0
+    },
+    {
+      "date": "2026-04-06",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-07",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-08",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-09",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-10",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-11",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-12",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-13",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-14",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-15",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-16",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-17",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-18",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-19",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-20",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-21",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-22",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-23",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-24",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-25",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-26",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-27",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-28",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    },
+    {
+      "date": "2026-04-29",
+      "totalRevenue": 0.0,
+      "totalExpenses": 0.0,
+      "netProfit": 0.0
+    }
+  ],
+  "incomeAllocations": [
+    {
+      "date": "2026-01-03",
+      "totalEarned": 70000.0,
+      "savingsAmount": 23100.0,
+      "businessAmount": 23100.0,
+      "personalAmount": 23100.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-04",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-05",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-06",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-07",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-08",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-09",
+      "totalEarned": 410000.0,
+      "savingsAmount": 135300.0,
+      "businessAmount": 135300.0,
+      "personalAmount": 135300.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-10",
+      "totalEarned": 290000.0,
+      "savingsAmount": 95700.0,
+      "businessAmount": -4300.0,
+      "personalAmount": 95700.0,
+      "drawings": 0.0,
+      "expenses": 100000.0
+    },
+    {
+      "date": "2026-01-11",
+      "totalEarned": 490000.0,
+      "savingsAmount": 161700.0,
+      "businessAmount": 161700.0,
+      "personalAmount": 161700.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-12",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-13",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-14",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-15",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-16",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-17",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-18",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-19",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-20",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-21",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-22",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-23",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-24",
+      "totalEarned": 180000.0,
+      "savingsAmount": 59400.0,
+      "businessAmount": 59400.0,
+      "personalAmount": 59400.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-25",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-26",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-27",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-28",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-29",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-30",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-01-31",
+      "totalEarned": 300000.0,
+      "savingsAmount": 99000.0,
+      "businessAmount": 99000.0,
+      "personalAmount": 99000.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-01",
+      "totalEarned": 300000.0,
+      "savingsAmount": 99000.0,
+      "businessAmount": 85000.0,
+      "personalAmount": 99000.0,
+      "drawings": 0.0,
+      "expenses": 14000.0
+    },
+    {
+      "date": "2026-02-02",
+      "totalEarned": 80000.0,
+      "savingsAmount": 26400.0,
+      "businessAmount": 26400.0,
+      "personalAmount": 26400.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-03",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-04",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-05",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-06",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-07",
+      "totalEarned": 140000.0,
+      "savingsAmount": 46200.0,
+      "businessAmount": 46200.0,
+      "personalAmount": -43800.0,
+      "drawings": 90000.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-08",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": -500.0,
+      "drawings": 500.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-09",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-10",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": -14000.0,
+      "drawings": 14000.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-11",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-12",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-13",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-14",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-15",
+      "totalEarned": 0.0,
+      "savingsAmount": -803440.0,
+      "businessAmount": 0.0,
+      "personalAmount": -549766.0,
+      "drawings": 549766.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-16",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-17",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-18",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-19",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-20",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-21",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-22",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-23",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-24",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-25",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-26",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-27",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-02-28",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-01",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-02",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-03",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-04",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-05",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-06",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-07",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-08",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-09",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-10",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-11",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-12",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-13",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-14",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-15",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-16",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-17",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-18",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-19",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-20",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-21",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-22",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-23",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-24",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-25",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-26",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-27",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-28",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-29",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-03-30",
+      "totalEarned": 70000.0,
+      "savingsAmount": 23100.0,
+      "businessAmount": -67900.0,
+      "personalAmount": 9550.0,
+      "drawings": 13550.0,
+      "expenses": 91000.0
+    },
+    {
+      "date": "2026-03-31",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": -136400.0,
+      "drawings": 136400.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-04-01",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": 0.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-04-02",
+      "totalEarned": 150000.0,
+      "savingsAmount": 49500.0,
+      "businessAmount": 49500.0,
+      "personalAmount": 49500.0,
+      "drawings": 0.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-04-03",
+      "totalEarned": 150000.0,
+      "savingsAmount": 49500.0,
+      "businessAmount": 49500.0,
+      "personalAmount": 20276.0,
+      "drawings": 29224.0,
+      "expenses": 0.0
+    },
+    {
+      "date": "2026-04-04",
+      "totalEarned": 340000.0,
+      "savingsAmount": 112200.0,
+      "businessAmount": 6200.0,
+      "personalAmount": 102200.0,
+      "drawings": 10000.0,
+      "expenses": 106000.0
+    },
+    {
+      "date": "2026-04-05",
+      "totalEarned": 0.0,
+      "savingsAmount": 0.0,
+      "businessAmount": -522500.0,
+      "personalAmount": 0.0,
+      "drawings": 0.0,
+      "expenses": 522500.0
+    }
+  ],
+  "monthlySummaries": [
+    {
+      "month": "January",
+      "year": 2026,
+      "totalRevenue": 1740000.0,
+      "totalExpenses": 125000.0,
+      "netProfit": 1615000.0,
+      "totalHoursWorked": 28.0,
+      "hourlyRate": 62143.0,
+      "totalCustomers": 28,
+      "totalHouses": 7,
+      "topClient": "Ammar Gammar",
+      "bestSeller": "Soft (3+)",
+      "businessAccount": 474200.0,
+      "savingsAccount": 574200.0,
+      "personalAccount": 574200.0,
+      "totalTransportCosts": 125000.0
+    },
+    {
+      "month": "February",
+      "year": 2026,
+      "totalRevenue": 520000.0,
+      "totalExpenses": 0.0,
+      "netProfit": 520000.0,
+      "totalHoursWorked": 8.0,
+      "hourlyRate": 65000.0,
+      "totalCustomers": 9,
+      "totalHouses": 4,
+      "topClient": "Azza",
+      "bestSeller": "Soft (3+)",
+      "businessAccount": 157600.0,
+      "savingsAccount": -631840.0,
+      "personalAccount": -482666.0,
+      "totalTransportCosts": 21000.0
+    },
+    {
+      "month": "March",
+      "year": 2026,
+      "totalRevenue": 70000.0,
+      "totalExpenses": 30000.0,
+      "netProfit": 40000.0,
+      "totalHoursWorked": 1.0,
+      "hourlyRate": 70000.0,
+      "totalCustomers": 1,
+      "totalHouses": 1,
+      "topClient": "Zainab Ali",
+      "bestSeller": "Soft (3+)",
+      "businessAccount": -67900.0,
+      "savingsAccount": 23100.0,
+      "personalAccount": -126850.0,
+      "totalTransportCosts": 30000.0
+    },
+    {
+      "month": "April",
+      "year": 2026,
+      "totalRevenue": 640000.0,
+      "totalExpenses": 60000.0,
+      "netProfit": 580000.0,
+      "totalHoursWorked": 9.5,
+      "hourlyRate": 67368.0,
+      "totalCustomers": 11,
+      "totalHouses": 4,
+      "topClient": "Mammy Ahmed",
+      "bestSeller": "Soft (3+)",
+      "businessAccount": -417300.0,
+      "savingsAccount": 211200.0,
+      "personalAccount": 171976.0,
+      "totalTransportCosts": 60000.0
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% set active = 'more' %}
+{% block title %}Rate card{% endblock %}
+{% block header %}Rate card{% endblock %}
+{% block subtitle %}Glam Me Upp service menu{% endblock %}
+{% block content %}
+<p class="info-lead">Official service menu — prices in {{ get_setting('currency','TZS') }}. Tap a package when booking to auto-fill revenue.</p>
+{% for cat, items in packages_grouped.items() %}
+<section class="glass rate-card-section motion-section">
+  <h2 class="rate-card-heading">{{ category_labels.get(cat, cat|title) }}</h2>
+  <div class="rate-card-grid">
+    {% for pkg in items %}
+    {% if pkg['active'] and pkg['id'] != 'custom' %}
+    <div class="rate-card-item">
+      <div class="rate-card-name">{{ pkg['label'] }}</div>
+      {% if pkg['headcount_tier'] %}
+      <div class="rate-card-meta">{{ pkg['headcount_tier'] }} people</div>
+      {% endif %}
+      <div class="rate-card-price">{{ fmt_money(pkg['price']) }}</div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+<div class="glass info-panel">
+  <p class="section-title" style="margin-top:0">Quick reference</p>
+  <ul class="info-list">
+    <li><strong>Simple / Soft / Dramatic</strong> — event glam by intensity</li>
+    <li><strong>1–2 vs 3+</strong> — headcount tier affects price</li>
+    <li><strong>Bridal Trial</strong> — pre-wedding test look</li>
+    <li><strong>Bridal OOT</strong> — out-of-city bridal booking</li>
+  </ul>
+</div>
+<a href="{{ url('/settings/packages') }}" class="btn btn-accent" style="display:block;margin-top:1rem">Edit prices</a>
+<a href="{{ url('/bookings') }}?tab=add" class="btn btn-primary" style="display:block;margin-top:0.5rem">Add booking</a>
+<a href="{{ url('/more') }}" class="btn" style="display:block;margin-top:0.5rem;text-align:center;color:var(--muted)">← More</a>
+{% endblock %}

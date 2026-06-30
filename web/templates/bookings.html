@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% set active = 'bookings' %}
+{% block title %}Bookings{% endblock %}
+{% block header %}Bookings{% endblock %}
+{% block subtitle %}{% if tab == 'add' %}Add new{% elif tab == 'edit' %}Edit booking{% elif tab == 'session' %}Live session{% else %}{{ upcoming|length }} upcoming{% endif %}{% endblock %}
+{% block content %}
+<nav class="tab-bar tab-bar-bookings" aria-label="Bookings">
+  <a href="{{ url('/bookings') }}?tab=add" class="{% if tab == 'add' %}active{% endif %}">+ Add</a>
+  <a href="{{ url('/bookings') }}?tab=upcoming" class="{% if tab == 'upcoming' %}active{% endif %}">Upcoming</a>
+  <a href="{{ url('/bookings') }}?tab=session" class="{% if tab == 'session' %}active{% endif %}">Session</a>
+  <a href="{{ url('/bookings') }}?tab=past" class="{% if tab == 'past' %}active{% endif %}">History</a>
+  <a href="{{ url('/bookings') }}?tab=month" class="{% if tab == 'month' %}active{% endif %}">Month</a>
+</nav>
+
+{% if tab == 'add' %}
+<p class="info-lead">Add a booking — pick a package for auto-price. <a href="{{ url('/rate-card') }}">Rate card</a></p>
+{% include 'partials/booking_form_fields.html' %}
+
+{% elif tab == 'edit' %}
+<p class="info-lead">Edit booking for <strong>{{ appt['client_name'] }}</strong></p>
+{% set delete_redirect = url('/bookings') ~ '?tab=upcoming' %}
+{% include 'partials/booking_form_fields.html' %}
+<a href="{{ url('/bookings') }}?tab=upcoming" class="btn btn-accent" style="display:block;margin-top:0.5rem;text-align:center">← Back to upcoming</a>
+
+{% elif tab == 'upcoming' %}
+<div class="stat-grid cal-summary-grid">
+  <div class="stat-card glass"><div class="label">Upcoming</div><div class="value">{{ upcoming|length }}</div></div>
+  <a href="{{ url('/bookings') }}?tab=add" class="stat-card glass stat-card-link interactive">
+    <div class="label">Quick add</div><div class="value value-sm">+ New</div>
+  </a>
+</div>
+{% for a in upcoming %}
+<div class="list-item glass list-item-with-thumb">
+  {% if a['photo_path'] %}<img src="{{ a['photo_path'] }}" alt="" class="booking-photo-thumb">{% endif %}
+  <div class="list-item-body">
+    <strong>{{ a['client_name'] }}</strong>
+    <div class="sub">{{ a['date'] }} · {{ a['start_time'] or '—' }}</div>
+    <div class="sub">{{ a['service_style'] or '—' }}{% if a['headcount_tier'] %} · {{ a['headcount_tier'] }}{% endif %} · {{ payment_label(a['payment_method']) }}</div>
+  </div>
+  <div class="list-item-actions">
+    <span class="amount">{{ fmt_money(a['revenue']) }}</span>
+    <a href="{{ url('/bookings') }}?tab=edit&id={{ a['id'] }}" class="btn-edit">Edit</a>
+    <form method="post" action="{{ url('/bookings/' ~ a['id'] ~ '/delete') }}" class="inline-delete-form"
+          onsubmit="return confirm('Delete this booking?')">
+      <input type="hidden" name="redirect_to" value="{{ url('/bookings') }}?tab=upcoming">
+      <button type="submit" class="btn-delete-inline">Delete</button>
+    </form>
+  </div>
+</div>
+{% else %}
+<p class="empty-state">No upcoming bookings.<br><a href="{{ url('/bookings') }}?tab=add">Add your first booking →</a></p>
+{% endfor %}
+
+{% elif tab == 'session' %}
+<div id="session-timer-root"
+     data-complete-url="{{ url('/bookings/session/complete') }}"
+     data-add-url="{{ url('/bookings') }}?tab=add"></div>
+<script type="application/json" id="session-upcoming-data">{{ session_upcoming | tojson }}</script>
+<script type="application/json" id="session-packages-data">{{ {'packages': session_packages, 'category_labels': category_labels} | tojson }}</script>
+
+{% elif tab == 'past' %}
+<p class="info-lead">Past and completed bookings.</p>
+<form method="get" action="{{ url('/bookings') }}" class="month-picker-form">
+  <input type="hidden" name="tab" value="past">
+  <input class="search-box glass" type="month" name="month" value="{{ month }}" onchange="this.form.submit()">
+</form>
+{% for a in past %}
+<div class="list-item glass list-item-with-thumb">
+  {% if a['photo_path'] %}<img src="{{ a['photo_path'] }}" alt="" class="booking-photo-thumb">{% endif %}
+  <div class="list-item-body">
+    <strong>{{ a['client_name'] }}</strong>
+    <div class="sub">{{ a['date'] }} · {{ a['service_style'] or '—' }}{% if a['headcount_tier'] %} · {{ a['headcount_tier'] }}{% endif %}</div>
+  </div>
+  <div class="list-item-actions">
+    <span class="amount">{{ fmt_money(a['revenue']) }}</span>
+    <a href="{{ url('/receipts/' ~ a['id']) }}" class="btn-edit">Receipt</a>
+    <form method="post" action="{{ url('/bookings/' ~ a['id'] ~ '/delete') }}" class="inline-delete-form"
+          onsubmit="return confirm('Delete this booking?')">
+      <input type="hidden" name="redirect_to" value="{{ url('/bookings') }}?tab=past&month={{ month }}">
+      <button type="submit" class="btn-delete-inline">Delete</button>
+    </form>
+  </div>
+</div>
+{% else %}
+<p class="empty-state">No past bookings for {{ month }}.</p>
+{% endfor %}
+
+{% else %}
+<form method="get" action="{{ url('/bookings') }}" class="month-picker-form">
+  <input type="hidden" name="tab" value="month">
+  <input class="search-box glass" type="month" name="month" value="{{ month }}" onchange="this.form.submit()">
+</form>
+<div class="stat-grid cal-summary-grid">
+  <div class="stat-card glass"><div class="label">Bookings</div><div class="value">{{ cal_stats['total'] }}</div></div>
+  <div class="stat-card glass"><div class="label">Revenue</div><div class="value value-sm">{{ fmt_money(cal_stats['revenue']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Travel</div><div class="value value-sm">{{ fmt_money(cal_stats['travel']) }}</div></div>
+</div>
+{% set ns = namespace(found=false) %}
+{% for a in (upcoming + past)|sort(attribute='date') %}
+{% if a['date'][:7] == month %}
+{% set ns.found = true %}
+<div class="list-item glass">
+  <div class="list-item-body">
+    <strong>{{ a['date'] }}</strong>
+    <div class="sub">{{ a['client_name'] }} · {{ a['service_style'] or '—' }} · {{ a['start_time'] or '' }}</div>
+  </div>
+  <span class="amount">{{ fmt_money(a['revenue']) }}</span>
+</div>
+{% endif %}
+{% endfor %}
+{% if not ns.found %}
+<p class="empty-state">No bookings in {{ month }}.</p>
+{% endif %}
+{% endif %}
+{% endblock %}
+{% block fab %}
+<a href="{{ url('/bookings') }}?tab=add" class="fab" title="Add booking" aria-label="Add booking">+</a>
+{% endblock %}
+{% block scripts %}
+{% if tab == 'add' or tab == 'edit' %}
+<script src="{{ static_url('js/booking-form.js') }}?v=2"></script>
+{% elif tab == 'session' %}
+<script src="{{ static_url('js/receipt-share.js') }}?v=1"></script>
+<script src="{{ static_url('js/session-timer.js') }}?v=2"></script>
+{% endif %}
+{% endblock %}

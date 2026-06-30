@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% set active = 'calendar' %}
+{% block title %}Calendar{% endblock %}
+{% block content %}
+{% include 'partials/date_filter.html' %}
+{% if period != 'custom' %}
+<form method="get" action="{{ url('/calendar') }}" style="margin-bottom:0.75rem">
+  <input class="search-box glass" type="month" name="month" value="{{ month }}" onchange="this.form.submit()">
+</form>
+{% endif %}
+
+<div class="stat-grid cal-summary-grid">
+  <div class="stat-card glass"><div class="label">Upcoming</div><div class="value">{{ upcoming|length }}</div></div>
+  <div class="stat-card glass"><div class="label">Past (view)</div><div class="value">{{ past|length }}</div></div>
+  <div class="stat-card glass"><div class="label">Month revenue</div><div class="value value-sm">{{ fmt_money(cal_stats['revenue']) }}</div></div>
+  <div class="stat-card glass"><div class="label">Travel</div><div class="value value-sm">{{ fmt_money(cal_stats['travel']) }}</div></div>
+</div>
+
+<div class="motion-section">
+<p class="section-title">Upcoming ({{ upcoming|length }})</p>
+{% for a in upcoming %}
+<div class="list-item glass list-item-with-thumb">
+  {% if a['photo_path'] %}
+  <img src="{{ a['photo_path'] }}" alt="" class="booking-photo-thumb">
+  {% endif %}
+  <div style="flex:1;min-width:0">
+    <strong>{{ a['client_name'] }}</strong>
+    <div class="sub">{{ a['date'] }} · {{ a['start_time'] or '—' }} · {{ a['service_style'] or '—' }}{% if a['headcount_tier'] %} · {{ a['headcount_tier'] }}{% endif %}</div>
+    <div class="sub">{{ payment_label(a['payment_method']) }}</div>
+  </div>
+  <div class="list-item-actions">
+    <span class="amount">{{ fmt_money(a['revenue']) }}</span>
+    <a href="{{ url('/bookings/' ~ a['id'] ~ '/edit') }}" class="btn-edit">Edit</a>
+  </div>
+</div>
+{% else %}
+<p style="color:var(--muted);font-size:0.85rem;margin-bottom:0.75rem">No upcoming bookings{% if period == 'custom' %} in this range{% else %} in {{ month }}{% endif %}.</p>
+{% endfor %}
+</div>
+
+<div class="motion-section">
+<p class="section-title">Past bookings ({{ past|length }}){% if period != 'custom' %} — {{ month }}{% endif %}</p>
+{% for a in past %}
+<div class="list-item glass list-item-with-thumb">
+  {% if a['photo_path'] %}
+  <img src="{{ a['photo_path'] }}" alt="" class="booking-photo-thumb">
+  {% endif %}
+  <div style="flex:1;min-width:0">
+    <strong>{{ a['client_name'] }}</strong>
+    <div class="sub">{{ a['date'] }} · {{ a['service_style'] or '—' }}{% if a['headcount_tier'] %} · {{ a['headcount_tier'] }}{% endif %} · {{ payment_label(a['payment_method']) }}</div>
+  </div>
+  <div class="list-item-actions">
+    <span class="amount">{{ fmt_money(a['revenue']) }}</span>
+    <a href="{{ url('/receipts/' ~ a['id']) }}" class="btn-edit">Receipt</a>
+  </div>
+</div>
+{% else %}
+<p style="color:var(--muted);font-size:0.85rem">No past bookings in this view.</p>
+{% endfor %}
+</div>
+{% endblock %}
+{% block fab %}
+<a href="{{ url('/bookings/new') }}" class="fab" title="New booking" aria-label="New booking">+</a>
+{% endblock %}

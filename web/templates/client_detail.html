@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% set active = 'clients' %}
+{% block title %}{{ client['name'] }}{% endblock %}
+{% block header %}{{ client['name'] }}{% endblock %}
+{% block subtitle %}Lifetime {{ fmt_money(client['lifetime_value']) }}{% endblock %}
+{% block content %}
+<div class="glass motion-fade" style="padding:1rem;margin-bottom:0.75rem;">
+  <p><strong>Lead source:</strong> {{ client['lead_source'] or '—' }}</p>
+  <p style="margin-top:0.5rem"><strong>Phone:</strong> {{ client['phone'] or '—' }}</p>
+  <p style="margin-top:0.5rem"><strong>Notes:</strong> {{ client['notes'] or '—' }}</p>
+</div>
+
+{% if upcoming %}
+<div class="motion-section">
+<p class="section-title">Upcoming ({{ upcoming|length }})</p>
+{% for a in upcoming %}
+<div class="list-item glass list-item-with-thumb">
+  {% if a['photo_path'] %}
+  <img src="{{ a['photo_path'] }}" alt="" class="booking-photo-thumb">
+  {% endif %}
+  <div style="flex:1;min-width:0">
+    <strong>{{ a['date'] }}</strong>
+    <div class="sub">{{ a['service_style'] or '—' }} · {{ a['start_time'] or '—' }}–{{ a['end_time'] or '—' }}</div>
+    <div class="sub">{{ payment_label(a['payment_method']) }}</div>
+  </div>
+  <div class="list-item-actions">
+    <a href="{{ url('/bookings') }}?tab=edit&id={{ a['id'] }}" class="btn-edit">Edit</a>
+    <form method="post" action="{{ url('/bookings/' ~ a['id'] ~ '/delete') }}" class="inline-delete-form"
+          onsubmit="return confirm('Delete this booking?')">
+      <input type="hidden" name="redirect_to" value="{{ url('/clients/' ~ client['id']) }}">
+      <button type="submit" class="btn-delete-inline">Delete</button>
+    </form>
+    <span class="amount">{{ fmt_money(a['revenue']) }}</span>
+  </div>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+<div class="motion-section">
+<p class="section-title">Booking history ({{ past|length }})</p>
+{% for a in past %}
+<div class="list-item glass list-item-with-thumb">
+  {% if a['photo_path'] %}
+  <img src="{{ a['photo_path'] }}" alt="" class="booking-photo-thumb">
+  {% endif %}
+  <div style="flex:1;min-width:0">
+    <strong>{{ a['date'] }}</strong>
+    <div class="sub">{{ a['service_style'] or '—' }} · {{ payment_label(a['payment_method']) }}</div>
+  </div>
+  <div class="list-item-actions">
+    <a href="{{ url('/receipts/' ~ a['id']) }}" class="btn-edit">Receipt</a>
+    <form method="post" action="{{ url('/bookings/' ~ a['id'] ~ '/delete') }}" class="inline-delete-form"
+          onsubmit="return confirm('Delete this booking?')">
+      <input type="hidden" name="redirect_to" value="{{ url('/clients/' ~ client['id']) }}">
+      <button type="submit" class="btn-delete-inline">Delete</button>
+    </form>
+    <span class="amount">{{ fmt_money(a['revenue']) }}</span>
+  </div>
+</div>
+{% else %}
+<p style="color:var(--muted);font-size:0.85rem">No past bookings yet.</p>
+{% endfor %}
+</div>
+<a href="{{ url('/clients') }}" class="btn btn-primary" style="display:block">← All clients</a>
+
+<form method="post"
+      action="{{ url('/clients/' ~ client['id'] ~ '/delete') }}"
+      class="delete-form"
+      style="margin-top:0.75rem"
+      onsubmit="return confirm('Delete this client?{% if booking_count %} This also removes {{ booking_count }} booking(s).{% endif %} This cannot be undone.')">
+  <button type="submit" class="btn-delete">Delete client</button>
+</form>
+{% endblock %}

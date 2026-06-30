@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% set active = 'more' %}
+{% block title %}Touch-Up Messages{% endblock %}
+{% block header %}Touch-Up SMS{% endblock %}
+{% block subtitle %}Post-glam client care{% endblock %}
+{% block content %}
+<p class="section-title">Templates — copy & send</p>
+{% for t in templates_list %}
+<div class="touch-template glass">
+  <strong>{{ t.title }}</strong>
+  <p style="margin-top:0.5rem">{{ t.body }}</p>
+</div>
+{% endfor %}
+<p class="section-title">Recent clients</p>
+{% for r in recent %}
+<div class="list-item glass">
+  <div><strong>{{ r['client_name'] }}</strong><div class="sub">{{ r['date'] }} · {{ r['service_style'] }}</div></div>
+</div>
+{% endfor %}
+<a href="{{ url('/more') }}" class="btn btn-primary" style="display:block;margin-top:1rem">← More</a>
+{% endblock %}

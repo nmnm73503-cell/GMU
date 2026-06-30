@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from 'partials/icons.html' import icon_expenses, icon_income, icon_receipt, icon_instagram, icon_touchup, icon_packages, icon_settings, icon_add, icon_client, icon_insights %}
+{% set active = 'more' %}
+{% block title %}More{% endblock %}
+{% block header %}More{% endblock %}
+{% block subtitle %}Tools & business{% endblock %}
+{% block content %}
+<div class="hub-grid">
+  <a href="{{ url('/rate-card') }}" class="hub-card glass interactive"><span class="hub-icon">{{ icon_packages() }}</span><strong>Rate card</strong><span class="hub-desc">Service menu & prices</span></a>
+  <a href="{{ url('/expenses') }}" class="hub-card glass interactive"><span class="hub-icon">{{ icon_expenses() }}</span><strong>Expenses</strong></a>
+  <a href="{{ url('/income') }}" class="hub-card glass interactive"><span class="hub-icon">{{ icon_income() }}</span><strong>Income Split</strong></a>
+  <a href="{{ url('/receipts') }}" class="hub-card glass interactive"><span class="hub-icon">{{ icon_receipt() }}</span><strong>Receipts</strong></a>
+  <a href="{{ url('/instagram') }}" class="hub-card glass interactive"><span class="hub-icon">{{ icon_instagram() }}</span><strong>Instagram</strong></a>
+  <a href="{{ url('/touch-up') }}" class="hub-card glass interactive"><span class="hub-icon">{{ icon_touchup() }}</span><strong>Touch-Up SMS</strong></a>
+  <a href="{{ url('/analytics') }}" class="hub-card glass interactive"><span class="hub-icon">{{ icon_insights() }}</span><strong>Full insights</strong></a>
+  <a href="{{ url('/bookings') }}?tab=add" class="hub-card glass interactive"><span class="hub-icon">{{ icon_add() }}</span><strong>Bookings</strong><span class="hub-desc">Add · see · edit</span></a>
+  <a href="{{ url('/clients/new') }}" class="hub-card glass interactive"><span class="hub-icon">{{ icon_client() }}</span><strong>New Client</strong></a>
+  <a href="{{ url('/settings/packages') }}" class="hub-card glass interactive"><span class="hub-icon">{{ icon_packages() }}</span><strong>Edit packages</strong></a>
+  <a href="{{ url('/settings') }}" class="hub-card glass interactive"><span class="hub-icon">{{ icon_settings() }}</span><strong>Settings</strong></a>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% set active = 'more' %}
+{% block title %}Expenses{% endblock %}
+{% block header %}Expenses{% endblock %}
+{% block subtitle %}Total {{ fmt_money(total) }}{% endblock %}
+{% block content %}
+{% include 'partials/date_filter.html' %}
+{% for e in expenses %}
+<div class="list-item glass">
+  <div><strong>{{ e['category'] or 'Expense' }}</strong><div class="sub">{{ e['date'] or e['month'] }} · {{ e['description'] }}</div></div>
+  <span class="amount">{{ fmt_money(e['amount']) }}</span>
+</div>
+{% endfor %}
+<a href="{{ url('/more') }}" class="btn btn-primary" style="display:block;margin-top:1rem">← More</a>
+{% endblock %}

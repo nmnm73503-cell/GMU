@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% set active = 'more' %}
+{% block title %}Receipts{% endblock %}
+{% block header %}Receipts{% endblock %}
+{% block subtitle %}Tap to view & print{% endblock %}
+{% block content %}
+{% include 'partials/date_filter.html' %}
+{% for a in appointments %}
+<a href="{{ url('/receipts/' ~ a['id']) }}" class="list-item glass interactive">
+  <div><strong>{{ a['client_name'] }}</strong><div class="sub">{{ a['date'] }} · {{ a['service_style'] }}</div></div>
+  <span class="amount">{{ fmt_money(a['revenue'] + a['transport_cost']) }}</span>
+</a>
+{% endfor %}
+<a href="{{ url('/more') }}" class="btn btn-primary" style="display:block;margin-top:1rem">← More</a>
+{% endblock %}

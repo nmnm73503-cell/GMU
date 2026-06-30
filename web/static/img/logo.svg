@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 32" role="img" aria-label="GMU">
+  <g fill="#000">
+    <path d="M1 3h13c7.7 0 14 6.3 14 14s-6.3 14-14 14H7V24h6.5c3.9 0 7-3.1 7-7s-3.1-7-7-7H7V3H1z"/>
+    <path d="M28 3h6l10.5 24L55 3h6v29H54V18.5L44.5 31h-2.5L32.5 18.5V32H28V3z"/>
+    <path d="M58 3h6v24.5c0 7.7 6.3 14 14 14s14-6.3 14-14V3h6v24.5c0 10.8-8.7 19.5-19.5 19.5S58 38.3 58 27.5V3h0z"/>
+  </g>
+  <rect x="1" y="30" width="84" height="0.75" fill="#000"/>
+</svg>

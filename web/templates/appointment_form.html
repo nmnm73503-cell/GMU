@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% set active = 'bookings' %}
+{% block title %}Bookings{% endblock %}
+{% block header %}Bookings{% endblock %}
+{% block content %}
+<script>location.replace("{{ url('/bookings') }}?tab=add");</script>
+<p class="empty-state">Opening Bookings… <a href="{{ url('/bookings') }}?tab=add">Tap here</a></p>
+{% endblock %}

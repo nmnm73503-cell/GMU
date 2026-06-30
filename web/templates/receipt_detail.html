@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% set active = 'more' %}
+{% block title %}Receipt {{ receipt_no }}{% endblock %}
+{% block header %}Receipt{% endblock %}
+{% block subtitle %}{{ receipt_no }}{% endblock %}
+{% block head %}
+<style>@media screen { .receipt-page { box-shadow: 0 4px 24px rgba(0,0,0,0.08); } }</style>
+{% endblock %}
+{% block content %}
+<article class="receipt-page glass receipt-share-card" id="receipt-share-target" data-receipt-no="{{ receipt_no }}">
+  <div class="receipt-logo">
+    {% with width=180, height=46 %}{% include 'partials/logo.html' %}{% endwith %}
+  </div>
+  <p style="text-align:center;font-size:0.85rem;color:var(--muted);margin-bottom:1rem">
+    {{ cfg.get('artist_name', 'Nawal') }} · {{ cfg.get('tagline', '') }}
+  </p>
+  <div class="receipt-line"><span>Receipt #</span><span>{{ receipt_no }}</span></div>
+  <div class="receipt-line"><span>Date</span><span>{{ appt['date'] }}</span></div>
+  <div class="receipt-line"><span>Client</span><span>{{ appt['client_name'] }}</span></div>
+  <div class="receipt-line"><span>Time</span><span>{{ appt['start_time'] }} – {{ appt['end_time'] }}</span></div>
+  {% if session_lines %}
+  {% for line in session_lines %}
+  <div class="receipt-line"><span>{{ line['count'] }}× {{ line['label'] }}</span><span>{{ fmt_money(line['subtotal']) }}</span></div>
+  {% endfor %}
+  {% else %}
+  <div class="receipt-line"><span>Service</span><span>{{ appt['service_style'] or 'Makeup' }}</span></div>
+  <div class="receipt-line"><span>Base rate</span><span>{{ fmt_money(appt['revenue']) }}</span></div>
+  {% endif %}
+  {% if appt['transport_cost'] %}
+  <div class="receipt-line"><span>Travel fee</span><span>{{ fmt_money(appt['transport_cost']) }}</span></div>
+  {% endif %}
+  <div class="receipt-line receipt-total"><span>Total</span><span>{{ fmt_money(grand_total) }}</span></div>
+  <div class="receipt-line"><span>Payment</span><span>{{ appt['payment_method'] or 'cash' }}</span></div>
+  <p style="text-align:center;margin-top:1.25rem;font-size:0.8rem;color:var(--muted)">{{ cfg.get('receipt_footer', '') }}</p>
+  {% if cfg.get('instagram') %}<p style="text-align:center;font-size:0.75rem;color:var(--accent)">@{{ cfg.instagram }}</p>{% endif %}
+</article>
+<button type="button" class="btn btn-primary" style="margin-top:1rem" data-share-receipt="receipt-share-target">Share PNG</button>
+<button onclick="window.print()" class="btn btn-accent" style="margin-top:0.5rem">Print / Save PDF</button>
+<a href="{{ url('/receipts') }}" class="btn btn-accent" style="display:block;margin-top:0.5rem">← All receipts</a>
+{% endblock %}
+{% block scripts %}
+<script src="{{ static_url('js/receipt-share.js') }}?v=1"></script>
+{% endblock %}

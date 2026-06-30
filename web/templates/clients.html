@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% set active = 'clients' %}
+{% block title %}Clients{% endblock %}
+{% block content %}
+<form method="get" action="{{ url('/clients') }}">
+  <input class="search-box glass" type="search" name="q" value="{{ q }}" placeholder="Search clients…">
+</form>
+<p class="section-title">{{ clients|length }} clients</p>
+<div class="motion-stagger">
+{% for c in clients %}
+<a href="{{ url('/clients/' ~ c['id']) }}" class="list-item glass interactive">
+  <div><strong>{{ c['name'] }}</strong><div class="sub">{{ c['lead_source'] or 'direct' }} · {{ c['phone'] or 'no phone' }}</div></div>
+  <span class="amount">{{ fmt_money(c['lifetime_value']) }}</span>
+</a>
+{% endfor %}
+</div>
+<a href="{{ url('/clients/new') }}" class="fab" title="Add client">+</a>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% set active = 'more' %}
+{% block title %}Instagram{% endblock %}
+{% block header %}Instagram{% endblock %}
+{% block subtitle %}@{{ ig.handle }}{% endblock %}
+{% block content %}
+<div class="glass" style="padding:1rem;text-align:center">
+  {% with width=140, height=36 %}{% include 'partials/logo.html' %}{% endwith %}
+  <p style="margin-top:0.75rem;font-weight:600">{{ ig.full_name }}</p>
+  <p style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;white-space:pre-line">{{ ig.biography }}</p>
+</div>
+<div class="ig-stat-grid">
+  <div class="stat-card glass"><div class="label">Followers</div><div class="value">{{ ig.followers }}</div></div>
+  <div class="stat-card glass"><div class="label">Following</div><div class="value">{{ ig.following }}</div></div>
+  <div class="stat-card glass"><div class="label">Posts</div><div class="value">{{ ig.posts }}</div></div>
+</div>
+{% if ig.error %}<div class="alert">Live fetch unavailable — showing cached estimates.</div>{% endif %}
+<a href="{{ ig.profile_url or 'https://instagram.com/glam.me.upp/' }}" class="btn btn-accent" style="display:block" target="_blank" rel="noopener">Open Instagram profile</a>
+<a href="{{ url('/more') }}" class="btn btn-primary" style="display:block;margin-top:0.5rem">← More</a>
+{% endblock %}

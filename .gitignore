@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+web/venv/
+
+# Local data
+web/data/
+*.db
+
+# Deploy artifact
+glam-me-upp-deploy.tar.gz
+
+# OS / IDE
+.DS_Store
+.cursor/
+
+# Uploads (runtime photos)
+web/static/uploads/

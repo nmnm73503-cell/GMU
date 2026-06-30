@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Glam Me Upp">
+  <meta name="theme-color" content="#000000">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% block title %}{{ get_setting('business_name', 'Glam Me Upp') }}{% endblock %}</title>
+  <script>
+    (function(){
+      var k='gmu-theme',m=localStorage.getItem(k)||'system';
+      var d=m==='dark'||(m==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.setAttribute('data-theme',d?'dark':'light');
+    })();
+  </script>
+  <link rel="icon" href="{{ static_url('img/favicon.svg') }}?v=11" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ static_url('img/profile-icon.svg') }}?v=11">
+  <link rel="stylesheet" href="{{ static_url('css/app.css') }}?v=11">
+  {% block head %}{% endblock %}
+</head>
+<body class="page-enter" data-static-base="{{ base_path }}">
+  <header class="app-header">
+    <div class="header-brand">
+      {% with width=120, height=32 %}{% include 'partials/logo.html' %}{% endwith %}
+      <div class="header-text">
+        <h1>{% block header %}{{ get_setting('business_name', 'Glam Me Upp') }}{% endblock %}</h1>
+        <p class="tagline">{% block subtitle %}{% endblock %}</p>
+      </div>
+      <button type="button" class="theme-toggle-btn" aria-label="Dark mode">◐</button>
+    </div>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  {% from 'partials/icons.html' import icon_home, icon_client, icon_bookings, icon_insights, icon_more %}
+  <nav class="bottom-nav bottom-nav-bookings">
+    <a href="{{ url('/') }}" class="nav-item {% if active == 'home' %}active{% endif %}"><span class="icon">{{ icon_home() }}</span>Home</a>
+    <a href="{{ url('/clients') }}" class="nav-item {% if active == 'clients' %}active{% endif %}"><span class="icon">{{ icon_client() }}</span>Clients</a>
+    <a href="{{ url('/bookings') }}?tab=upcoming" class="nav-item nav-item-bookings {% if active == 'bookings' %}active{% endif %}"><span class="icon">{{ icon_bookings() }}</span>Bookings</a>
+    <a href="{{ url('/analytics') }}" class="nav-item {% if active == 'analytics' %}active{% endif %}"><span class="icon">{{ icon_insights() }}</span>Insights</a>
+    <a href="{{ url('/more') }}" class="nav-item {% if active == 'more' %}active{% endif %}"><span class="icon">{{ icon_more() }}</span>More</a>
+  </nav>
+  {% block fab %}{% endblock %}
+  <script src="{{ static_url('js/theme.js') }}?v=2"></script>
+  <script src="{{ static_url('js/motion.js') }}?v=2"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
