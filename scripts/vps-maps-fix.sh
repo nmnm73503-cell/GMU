@@ -60,7 +60,7 @@ else
     echo "$SM" | tr '\n' ' ' | head -c 200
     echo ""
   fi
-  JS=$(curl -sS "https://maps.googleapis.com/maps/api/js?key=${KEY}&libraries=places" | head -c 80)
+  JS=$(curl -sS "https://maps.googleapis.com/maps/api/js?key=${KEY}&libraries=places" 2>/dev/null | head -c 80 || true)
   if echo "$JS" | grep -qi "error\|invalid"; then
     echo "Maps JS loader: possible error in response"
   else

@@ -65,7 +65,7 @@
   <input type="hidden" name="lat" id="location-lat" value="{{ appt['lat'] if appt and appt['lat'] else '' }}">
   <input type="hidden" name="lng" id="location-lng" value="{{ appt['lng'] if appt and appt['lng'] else '' }}">
   <div id="location-map" class="location-map" data-lat="{{ appt['lat'] if appt and appt['lat'] else '-6.7924' }}" data-lng="{{ appt['lng'] if appt and appt['lng'] else '39.2083' }}"></div>
-  <p class="session-hint">Tap the map to drop a pin at the client’s location.</p>
+  <p class="session-hint">Search address or tap the map to drop a pin. Free map — no Google account needed.</p>
 
   <label>Revenue ({{ get_setting('currency','TZS') }})</label>
   <input id="revenue-input" name="revenue" type="number" step="1000" min="0"

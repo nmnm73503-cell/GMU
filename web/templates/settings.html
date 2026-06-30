@@ -43,11 +43,6 @@
   <label>Receipt footer</label><textarea name="receipt_footer" rows="2">{{ cfg.get('receipt_footer','') }}</textarea>
   <label>Primary color</label><input name="primary_color" type="color" value="{{ cfg.get('primary_color','#000000') }}">
   <label>Accent color</label><input name="accent_color" type="color" value="{{ cfg.get('accent_color','#000000') }}">
-  <label>Google Maps API key <span class="label-hint">(optional)</span></label>
-  <input name="google_maps_api_key" value="{{ cfg.get('google_maps_api_key','') }}" placeholder="AIza…">
-  <p style="font-size:0.75rem;color:var(--muted);margin-top:0.35rem">
-    Enables Google Places search in Bookings location.
-  </p>
   <button type="submit" class="btn btn-primary">Save settings</button>
 </form>
 <form method="post" action="{{ url('/settings/reimport') }}" style="margin-top:1rem">
