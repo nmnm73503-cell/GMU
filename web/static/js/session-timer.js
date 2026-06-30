@@ -376,14 +376,17 @@
         html += '<p class="info-lead">Timer is running — add each face as you finish their glam.</p>';
       }
 
+      var hasAnyFace = (state.faces && state.faces.length) || state.currentFace;
+      var addFaceLabel = hasAnyFace ? "Add face" : "Start first face";
+
       html += '<div class="session-add-face glass">';
-      html += "<h3>Start next face</h3>";
+      html += "<h3>" + addFaceLabel + "</h3>";
       html += '<label class="session-label">Name <span class="label-hint">(optional)</span></label>';
       html += '<input type="text" id="session-face-name" class="session-input" placeholder="e.g. bridesmaid, guest 1…">';
       html += '<label class="session-label">Glam package</label>';
       html += renderSessionGlamPicker(defaultPackageId(host));
       html += '<button type="button" class="btn btn-primary session-add-face-btn" style="margin-top:0.65rem">' +
-        (state.currentFace ? "Start next face" : "Start first face") + "</button>";
+        addFaceLabel + "</button>";
       html += "</div>";
 
       html += '<button type="button" class="btn btn-accent session-finish-btn" style="margin-top:0.75rem"' +
