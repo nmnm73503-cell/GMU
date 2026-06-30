@@ -155,6 +155,7 @@ def init_db() -> None:
             "logo_path": "",
             "primary_color": "#000000",
             "accent_color": "#000000",
+            "google_maps_api_key": "",
             "receipt_footer": "Thank you for trusting me with your glam.",
             "seed_imported": "0",
             "split_savings_pct": "30",

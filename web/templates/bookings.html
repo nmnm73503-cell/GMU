@@ -40,7 +40,12 @@
   <div class="list-item-body">
     <strong>{{ a['client_name'] }}</strong>
     <div class="sub">{{ a['date'] }} · {{ a['start_time'] or '—' }}</div>
-    <div class="sub">{{ a['service_style'] or 'Inquiry' }}{% if a['headcount_tier'] %} · {{ a['headcount_tier'] }}{% endif %} · {{ payment_label(a['payment_method']) }}{% if a['status'] == 'inquiry' %} · <span class="status-pill upcoming">Inquiry</span>{% endif %}</div>
+    <div class="sub">
+      {{ a['service_style'] or 'Inquiry' }}{% if a['headcount_tier'] %} · {{ a['headcount_tier'] }}{% endif %} · {{ payment_label(a['payment_method']) }}
+      {% if a['status'] == 'inquiry' %} · <span class="status-pill upcoming">Inquiry</span>{% endif %}
+      {% if a['status'] == 'confirmed' %} · <span class="status-pill upcoming">Confirmed</span>{% endif %}
+      {% if a['status'] == 'deposit_paid' %} · <span class="status-pill upcoming">Deposit</span>{% endif %}
+    </div>
     {% if a['location'] %}<div class="sub">{{ a['location'] }}</div>{% endif %}
   </div>
   <div class="list-item-actions">
@@ -55,7 +60,7 @@
     {% if a['status'] == 'inquiry' %}
     <form method="post" action="{{ url('/bookings/' ~ a['id'] ~ '/status') }}" class="inline-delete-form">
       <input type="hidden" name="status" value="confirmed">
-      <input type="hidden" name="redirect_to" value="{{ url('/bookings') }}?tab=upcoming">
+      <input type="hidden" name="redirect_to" value="{{ url('/bookings') }}?tab=session">
       <button type="submit" class="btn-edit">Confirm</button>
     </form>
     <form method="post" action="{{ url('/bookings/' ~ a['id'] ~ '/status') }}" class="inline-delete-form">
@@ -150,6 +155,6 @@
 <script src="{{ static_url('js/location-picker.js') }}?v=2"></script>
 {% elif tab == 'session' %}
 <script src="{{ static_url('js/receipt-share.js') }}?v=1"></script>
-<script src="{{ static_url('js/session-timer.js') }}?v=3"></script>
+<script src="{{ static_url('js/session-timer.js') }}?v=4"></script>
 {% endif %}
 {% endblock %}

@@ -642,7 +642,8 @@ async def booking_set_status(
         conn.execute("UPDATE appointments SET status=? WHERE id=?", (status, appt_id))
         if appt["client_id"]:
             _refresh_client_ltv(conn, appt["client_id"])
-    return RedirectResponse(safe_redirect(redirect_to, "/bookings?tab=upcoming"), status_code=303)
+    fallback = "/bookings?tab=session" if status == "confirmed" else "/bookings?tab=upcoming"
+    return RedirectResponse(safe_redirect(redirect_to, fallback), status_code=303)
 
 
 @router.post("/bookings/{appt_id}/session/start")
@@ -1181,12 +1182,14 @@ async def settings_save(
     receipt_footer: str = Form(""),
     primary_color: str = Form("#000000"),
     accent_color: str = Form("#000000"),
+    google_maps_api_key: str = Form(""),
 ):
     for k, v in {
         "business_name": business_name, "artist_name": artist_name,
         "tagline": tagline, "phone": phone, "instagram": instagram,
         "currency": currency, "receipt_footer": receipt_footer,
         "primary_color": primary_color, "accent_color": accent_color,
+        "google_maps_api_key": google_maps_api_key.strip(),
     }.items():
         set_setting(k, v)
     return RedirectResponse(url("/settings?saved=1"), status_code=303)
