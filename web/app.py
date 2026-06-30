@@ -11,7 +11,7 @@ from fastapi.templating import Jinja2Templates
 
 from analytics_data import fetch_insights
 from config import BASE_PATH, DEDICATED_FOR, PUBLIC_URL
-from database import connect, get_setting, init_db, is_seeded, set_setting
+from database import connect, get_setting, init_db, is_seeded, load_settings, set_setting
 from helpers import (
     calc_split,
     format_month_short,
@@ -478,10 +478,7 @@ async def bookings_hub(
     session_packages = []
     menu_packages = []
     with connect() as conn:
-        cfg = {
-            r["key"]: r["value"]
-            for r in conn.execute("SELECT key, value FROM settings").fetchall()
-        }
+        cfg = load_settings(conn)
         upcoming_rows = conn.execute(
             """SELECT * FROM appointments
                WHERE date >= ? AND status NOT IN ('completed', 'cancelled', 'no_show')
@@ -602,10 +599,7 @@ async def session_complete(request: Request):
     duration_minutes = int(body.get("duration_minutes", 0) or 0)
 
     with connect() as conn:
-        cfg = {
-            r["key"]: r["value"]
-            for r in conn.execute("SELECT key, value FROM settings").fetchall()
-        }
+        cfg = load_settings(conn)
         appt = conn.execute(
             "SELECT * FROM appointments WHERE id = ?", (int(appt_id),)
         ).fetchone()
@@ -1043,10 +1037,7 @@ async def receipt_detail(request: Request, appt_id: int):
         ).fetchone()
         if not appt:
             return RedirectResponse(url("/receipts"), status_code=302)
-        cfg = {
-            r["key"]: r["value"]
-            for r in conn.execute("SELECT key, value FROM settings").fetchall()
-        }
+        cfg = load_settings(conn)
         session_lines = _session_lines_from_appt(appt, conn)
     prefix = (cfg.get("business_name") or "GMU")[:3].upper()
     receipt_no = f"{prefix}-{appt_id:04d}"
@@ -1200,7 +1191,7 @@ async def package_image_delete(package_id: str, image_id: int):
 @router.get("/settings", response_class=HTMLResponse)
 async def settings_page(request: Request):
     with connect() as conn:
-        cfg = {r["key"]: r["value"] for r in conn.execute("SELECT key, value FROM settings").fetchall()}
+        cfg = load_settings(conn)
     return templates.TemplateResponse("settings.html", {"request": request, "cfg": cfg})
 
 

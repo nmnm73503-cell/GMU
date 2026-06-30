@@ -197,5 +197,16 @@ def set_setting(key: str, value: str) -> None:
         )
 
 
+def load_settings(conn: sqlite3.Connection | None = None) -> dict[str, str]:
+    """All settings as a dict, with known normalizations applied."""
+    if conn is None:
+        with connect() as c:
+            return load_settings(c)
+    cfg = {r["key"]: r["value"] for r in conn.execute("SELECT key, value FROM settings").fetchall()}
+    if cfg.get("google_maps_api_key"):
+        cfg["google_maps_api_key"] = _normalize_google_maps_key(cfg["google_maps_api_key"])
+    return cfg
+
+
 def is_seeded() -> bool:
     return get_setting("seed_imported") == "1"
