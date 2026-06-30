@@ -57,5 +57,13 @@
     setPin(loc.lat(), loc.lng());
     map.setZoom(15);
   });
+
+  // Google loads the library but tiles fail (billing / API not enabled) → use OSM
+  setTimeout(function () {
+    if (!mapEl.querySelector(".gm-err-container, .gm-err-message")) return;
+    if (typeof window.gmuLoadOsmFallback !== "function") return;
+    mapEl.innerHTML = "";
+    window.gmuLoadOsmFallback();
+  }, 2500);
 })();
 
