@@ -1452,3 +1452,61 @@ main > .section-title {
 .session-face-info { flex: 1; min-width: 0; }
 .session-hint { font-size: 0.78rem; color: var(--muted); margin-top: 0.35rem; text-align: center; }
 
+/* Glam picker */
+.glam-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem; }
+.glam-picker-cat { grid-column: 1 / -1; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0.35rem 0 0; }
+.glam-card {
+  display: flex; flex-direction: column; align-items: flex-start; text-align: left;
+  padding: 0.65rem; border: 1.5px solid var(--input-border); border-radius: 10px;
+  background: var(--pill-bg); color: var(--text); cursor: pointer; width: 100%;
+}
+.glam-card.selected { border-color: var(--text); background: var(--text); color: var(--pill-active-fg); }
+.glam-card-tbd { grid-column: 1 / -1; }
+.glam-card-title { font-size: 0.82rem; font-weight: 700; line-height: 1.2; }
+.glam-card-meta { font-size: 0.68rem; opacity: 0.75; margin-top: 0.2rem; }
+.glam-card-price { font-size: 0.75rem; margin-top: 0.35rem; font-weight: 600; }
+.glam-picker-compact { grid-template-columns: repeat(3, 1fr); }
+.glam-card-sm .glam-card-title { font-size: 0.72rem; }
+.glam-card-sm .glam-card-price { font-size: 0.68rem; }
+
+.client-picker-row { display: flex; gap: 0.5rem; align-items: stretch; }
+.client-select-grow { flex: 1; min-width: 0; }
+.new-client-panel { margin-top: 0.5rem; padding: 0.75rem; border: 1px dashed var(--input-border); border-radius: 10px; }
+.btn-sm { padding: 0.45rem 0.65rem; font-size: 0.78rem; white-space: nowrap; }
+
+.location-map { height: 200px; border-radius: 10px; border: 1px solid var(--input-border); margin-top: 0.35rem; z-index: 1; }
+
+.travel-actions { display: flex; gap: 0.35rem; flex-wrap: wrap; justify-content: flex-end; }
+.btn-travel {
+  font-size: 0.68rem; padding: 0.28rem 0.5rem; border-radius: 6px;
+  border: 1px solid var(--text); text-decoration: none; color: var(--text); font-weight: 700;
+}
+.btn-travel-bolt { background: var(--text); color: var(--pill-active-fg); }
+
+/* Menu / portfolio tab */
+.menu-package-card { padding: 1rem; margin-bottom: 0.85rem; }
+.menu-package-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.65rem; }
+.menu-package-title { font-size: 1rem; margin: 0; }
+.menu-package-meta { font-size: 0.75rem; color: var(--muted); margin: 0.2rem 0 0; }
+.menu-package-price { font-size: 0.95rem; font-weight: 700; white-space: nowrap; }
+.menu-package-placeholder { padding: 2rem 1rem; text-align: center; font-size: 0.8rem; color: var(--muted); border: 1px dashed var(--input-border); border-radius: 10px; margin-bottom: 0.65rem; }
+.menu-book-btn { width: 100%; margin-top: 0.5rem; }
+
+.package-carousel { position: relative; border-radius: 10px; overflow: hidden; aspect-ratio: 4/3; background: #111; margin-bottom: 0.5rem; }
+.carousel-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
+.carousel-slide.active { opacity: 1; pointer-events: auto; }
+.carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.carousel-dots { position: absolute; bottom: 0.5rem; left: 0; right: 0; display: flex; justify-content: center; gap: 0.35rem; z-index: 2; }
+.carousel-dot { width: 6px; height: 6px; border-radius: 50%; border: none; background: rgba(255,255,255,0.45); padding: 0; }
+.carousel-dot.active { background: #fff; transform: scale(1.2); }
+
+.package-thumb-row { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.35rem; }
+.package-edit-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; }
+
+/* FAB — hide overlap on form tabs; keep above nav */
+.fab { line-height: 1; padding-bottom: 2px; }
+@media (max-width: 380px) {
+  .glam-picker { grid-template-columns: 1fr; }
+  .glam-picker-compact { grid-template-columns: 1fr 1fr; }
+}
+

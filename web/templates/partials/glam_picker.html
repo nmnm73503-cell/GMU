@@ -1,0 +1,29 @@
+{# Visual glam package picker — tap to select #}
+<input type="hidden" name="package_id" id="package-id-input" value="{{ selected_package or 'tbd' }}">
+<input type="hidden" id="service-style-input" name="service_style" value="{{ appt['service_style'] if appt else '' }}">
+<input type="hidden" id="headcount-tier-input" name="headcount_tier" value="{{ appt['headcount_tier'] if appt else '' }}">
+
+<div class="glam-picker" id="glam-picker">
+  <button type="button" class="glam-card glam-card-tbd {% if selected_package == 'tbd' or not selected_package %}selected{% endif %}"
+          data-id="tbd" data-price="0" data-style="" data-tier="">
+    <span class="glam-card-title">Decide on site</span>
+    <span class="glam-card-meta">Inquiry — pick glam when you arrive</span>
+    <span class="glam-card-price">TBD</span>
+  </button>
+  {% for cat, items in packages_grouped.items() %}
+  <p class="glam-picker-cat">{{ category_labels.get(cat, cat|title) }}</p>
+  {% for pkg in items %}
+  {% if pkg['active'] and pkg['id'] not in ('custom',) %}
+  <button type="button" class="glam-card {% if selected_package == pkg['id'] %}selected{% endif %}"
+          data-id="{{ pkg['id'] }}"
+          data-price="{{ pkg['price']|int }}"
+          data-style="{{ pkg['service_style'] }}"
+          data-tier="{{ pkg['headcount_tier'] }}">
+    <span class="glam-card-title">{{ pkg['label'] }}</span>
+    {% if pkg['headcount_tier'] %}<span class="glam-card-meta">{{ pkg['headcount_tier'] }} people</span>{% endif %}
+    <span class="glam-card-price">{{ fmt_money(pkg['price']) if pkg['price'] else 'Custom' }}</span>
+  </button>
+  {% endif %}
+  {% endfor %}
+  {% endfor %}
+</div>

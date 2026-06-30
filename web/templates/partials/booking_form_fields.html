@@ -1,33 +1,31 @@
-{# Shared booking form — used inside Bookings tab only #}
+{# Shared booking form — inquiry-first, map, inline new client #}
 <form method="post"
       action="{% if appt %}{{ url('/bookings/' ~ appt['id'] ~ '/edit') }}{% else %}{{ url('/bookings/new') }}{% endif %}"
       enctype="multipart/form-data"
-      class="settings-form glass motion-fade booking-form-panel">
-  <label>Client *</label>
-  <select name="client_id" required>
-    {% for c in clients %}
-    <option value="{{ c['id'] }}" {% if appt and appt['client_id'] == c['id'] %}selected{% endif %}>{{ c['name'] }}</option>
-    {% endfor %}
-  </select>
+      class="settings-form glass motion-fade booking-form-panel"
+      id="booking-form">
 
-  <label>Service package</label>
-  <select id="service-package" name="package_id">
-    {% for cat, items in packages_grouped.items() %}
-    <optgroup label="{{ category_labels.get(cat, cat|title) }}">
-      {% for pkg in items %}
-      {% if pkg['active'] %}
-      <option value="{{ pkg['id'] }}"
-              data-price="{{ pkg['price']|int }}"
-              data-style="{{ pkg['service_style'] }}"
-              data-tier="{{ pkg['headcount_tier'] }}"
-              {% if selected_package == pkg['id'] %}selected{% endif %}>
-        {{ pkg['label'] }}{% if pkg['price'] %} — {{ fmt_money(pkg['price']) }}{% else %} — enter amount{% endif %}
-      </option>
-      {% endif %}
-    {% endfor %}
-    </optgroup>
-    {% endfor %}
-  </select>
+  <label>Client</label>
+  <div class="client-picker-row">
+    <select name="client_id" id="client-select" class="client-select-grow" required>
+      <option value="">— Select client —</option>
+      {% for c in clients %}
+      <option value="{{ c['id'] }}" {% if appt and appt['client_id'] == c['id'] %}selected{% endif %}>{{ c['name'] }}</option>
+      {% endfor %}
+    </select>
+    <button type="button" class="btn btn-accent btn-sm" id="toggle-new-client" aria-expanded="false">+ New</button>
+  </div>
+  <div id="new-client-panel" class="new-client-panel" hidden>
+    <label>New client name</label>
+    <input name="new_client_name" id="new-client-name" placeholder="e.g. Ammar Gammar">
+    <label>Phone <span class="label-hint">(optional)</span></label>
+    <input name="new_client_phone" type="tel" placeholder="+255…">
+  </div>
+
+  <label>Glam <span class="label-hint">(optional for inquiries)</span></label>
+  {% set selected_package = selected_package if selected_package is defined else ('tbd' if not appt else selected_package) %}
+  {% if appt and not appt['service_style'] and not appt['revenue'] %}{% set selected_package = 'tbd' %}{% endif %}
+  {% include 'partials/glam_picker.html' %}
 
   <label>Date *</label>
   <input name="date" type="date" required value="{{ appt['date'] if appt else '' }}">
@@ -48,12 +46,17 @@
     </select>
   </div>
 
-  <input type="hidden" id="service-style-input" name="service_style" value="{{ appt['service_style'] if appt else '' }}">
-  <input type="hidden" id="headcount-tier-input" name="headcount_tier" value="{{ appt['headcount_tier'] if appt else '' }}">
+  <label>Location</label>
+  <input name="location" id="location-label" type="text" placeholder="Address or place name"
+         value="{{ appt['location'] if appt and appt['location'] else '' }}">
+  <input type="hidden" name="lat" id="location-lat" value="{{ appt['lat'] if appt and appt['lat'] else '' }}">
+  <input type="hidden" name="lng" id="location-lng" value="{{ appt['lng'] if appt and appt['lng'] else '' }}">
+  <div id="location-map" class="location-map" data-lat="{{ appt['lat'] if appt and appt['lat'] else '-6.7924' }}" data-lng="{{ appt['lng'] if appt and appt['lng'] else '39.2083' }}"></div>
+  <p class="session-hint">Tap the map to drop a pin at the client’s location.</p>
 
   <label>Revenue ({{ get_setting('currency','TZS') }})</label>
   <input id="revenue-input" name="revenue" type="number" step="1000" min="0"
-         value="{{ appt['revenue'] if appt else '' }}">
+         value="{{ appt['revenue'] if appt else '' }}" placeholder="0 for inquiry">
 
   <label>Travel cost</label>
   <input name="transport_cost" type="number" step="1000" min="0"
@@ -69,9 +72,9 @@
   </select>
 
   <label>Status</label>
-  <select name="status">
+  <select name="status" id="booking-status">
     {% for s in ['inquiry', 'confirmed', 'deposit_paid', 'completed', 'cancelled'] %}
-    <option value="{{ s }}" {% if appt and appt['status'] == s %}selected{% elif not appt and s == 'confirmed' %}selected{% endif %}>
+    <option value="{{ s }}" {% if appt and appt['status'] == s %}selected{% elif not appt and s == 'inquiry' %}selected{% endif %}>
       {{ s.replace('_', ' ').title() }}
     </option>
     {% endfor %}
@@ -83,7 +86,7 @@
   {% endif %}
   <input name="photo" type="file" accept="image/*">
 
-  <button type="submit" class="btn btn-primary">{% if appt %}Save changes{% else %}Save booking{% endif %}</button>
+  <button type="submit" class="btn btn-primary">{% if appt %}Save changes{% else %}Save inquiry / booking{% endif %}</button>
 </form>
 {% if appt %}
 <form method="post"

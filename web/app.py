@@ -31,6 +31,7 @@ from packages import (
     match_package_for_appt,
     package_by_id,
     packages_grouped,
+    packages_with_galleries,
     payment_label,
 )
 from seed import import_seed
@@ -40,6 +41,7 @@ router = APIRouter()
 templates = Jinja2Templates(directory=str(BASE / "templates"))
 (BASE / "static" / "uploads").mkdir(parents=True, exist_ok=True)
 (BASE / "static" / "uploads" / "bookings").mkdir(parents=True, exist_ok=True)
+(BASE / "static" / "uploads" / "packages").mkdir(parents=True, exist_ok=True)
 
 
 def _session_appt_dict(row) -> dict:
@@ -52,6 +54,10 @@ def _session_appt_dict(row) -> dict:
         "headcount_tier": row["headcount_tier"] or "",
         "revenue": float(row["revenue"] or 0),
         "transport_cost": float(row["transport_cost"] or 0),
+        "location": row["location"] or "",
+        "lat": row["lat"] if row["lat"] is not None else None,
+        "lng": row["lng"] if row["lng"] is not None else None,
+        "status": row["status"] or "",
     }
 
 
@@ -108,9 +114,12 @@ def _session_lines_from_appt(appt, conn) -> list[dict]:
 def _booking_form_ctx(appt=None) -> dict:
     with connect() as conn:
         packages = load_packages(conn, active_only=True)
-        selected = "simple_1_2"
+        selected = "tbd"
         if appt:
-            selected = match_package_for_appt(conn, appt)
+            if (appt["service_style"] or appt["revenue"]):
+                selected = match_package_for_appt(conn, appt)
+            else:
+                selected = "tbd"
     return {
         "packages": packages,
         "packages_grouped": packages_grouped(packages),
@@ -151,6 +160,56 @@ def _remove_booking_photo(photo_path: str | None) -> None:
     path = BASE / "static" / "uploads" / "bookings" / rel
     if path.is_file():
         path.unlink(missing_ok=True)
+
+
+def _resolve_client(
+    conn: sqlite3.Connection,
+    client_id: int,
+    new_client_name: str,
+    new_client_phone: str = "",
+) -> tuple[int, str] | None:
+    name = (new_client_name or "").strip()
+    if name:
+        conn.execute(
+            "INSERT INTO clients (name, phone) VALUES (?, ?)",
+            (name, (new_client_phone or "").strip()),
+        )
+        cid = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        return int(cid), name
+    if client_id:
+        row = conn.execute(
+            "SELECT name FROM clients WHERE id = ?", (client_id,)
+        ).fetchone()
+        if row:
+            return client_id, row["name"]
+    return None
+
+
+async def _save_package_images(
+    conn: sqlite3.Connection, package_id: str, files: list[UploadFile]
+) -> None:
+    if not files:
+        return
+    dest_dir = BASE / "static" / "uploads" / "packages" / package_id
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    max_order = conn.execute(
+        "SELECT COALESCE(MAX(sort_order), -1) FROM package_images WHERE package_id = ?",
+        (package_id,),
+    ).fetchone()[0]
+    for i, upload in enumerate(files):
+        if not upload or not upload.filename:
+            continue
+        ext = Path(upload.filename).suffix.lower()
+        if ext not in {".jpg", ".jpeg", ".png", ".webp", ".gif"}:
+            ext = ".jpg"
+        fname = f"{max_order + i + 1}{ext}"
+        rel = f"uploads/packages/{package_id}/{fname}"
+        (BASE / "static" / rel).write_bytes(await upload.read())
+        conn.execute(
+            """INSERT INTO package_images (package_id, path, sort_order)
+               VALUES (?, ?, ?)""",
+            (package_id, static_url(rel), max_order + i + 1),
+        )
 
 
 def _split_bookings(rows, today: str) -> tuple[list, list]:
@@ -393,12 +452,13 @@ async def bookings_hub(
     today = date.today().isoformat()
     if tab in ("new", "calendar"):
         tab = "add" if tab == "new" else "month"
-    if tab not in ("add", "upcoming", "past", "month", "edit", "session"):
+    if tab not in ("add", "upcoming", "past", "month", "edit", "session", "menu"):
         tab = "upcoming"
     appt = None
     form_ctx = {}
     cfg = {}
     session_packages = []
+    menu_packages = []
     with connect() as conn:
         upcoming_rows = conn.execute(
             """SELECT * FROM appointments
@@ -441,6 +501,8 @@ async def bookings_hub(
                 for r in conn.execute("SELECT key, value FROM settings").fetchall()
             }
             session_packages = _session_packages_list(conn)
+        if tab in ("menu", "add", "edit"):
+            menu_packages = packages_with_galleries(conn, active_only=True)
     return templates.TemplateResponse(
         "bookings.html",
         {
@@ -450,6 +512,7 @@ async def bookings_hub(
             "upcoming": list(upcoming_rows),
             "session_upcoming": [_session_appt_dict(r) for r in upcoming_rows],
             "session_packages": session_packages if tab == "session" else [],
+            "menu_packages": menu_packages,
             "category_labels": CATEGORY_LABELS,
             "past": list(past_rows),
             "cal_stats": cal_stats,
@@ -571,41 +634,58 @@ async def booking_edit_redirect(appt_id: int):
 
 @router.post("/bookings/new")
 async def booking_create(
-    client_id: int = Form(...),
+    client_id: int = Form(0),
+    new_client_name: str = Form(""),
+    new_client_phone: str = Form(""),
     date_val: str = Form(..., alias="date"),
     start_time: str = Form(""),
     end_time: str = Form(""),
-    package_id: str = Form("simple_1_2"),
+    package_id: str = Form("tbd"),
     service_style: str = Form(""),
     headcount_tier: str = Form(""),
     revenue: float = Form(0),
     transport_cost: float = Form(0),
     payment_method: str = Form("cash"),
-    status: str = Form("confirmed"),
+    status: str = Form("inquiry"),
+    location: str = Form(""),
+    lat: str = Form(""),
+    lng: str = Form(""),
     photo: UploadFile | None = File(None),
 ):
     with connect() as conn:
-        pkg = package_by_id(conn, package_id)
-        if pkg:
-            if pkg["service_style"] and not service_style:
-                service_style = pkg["service_style"]
-            if pkg["headcount_tier"] and not headcount_tier:
-                headcount_tier = pkg["headcount_tier"]
+        resolved = _resolve_client(conn, client_id, new_client_name, new_client_phone)
+        if not resolved:
+            return RedirectResponse(url("/bookings?tab=add"), status_code=303)
+        client_id, client_name = resolved
+
+        if package_id == "tbd":
+            service_style = ""
+            headcount_tier = ""
+            revenue = 0
+        else:
+            pkg = package_by_id(conn, package_id)
+            if pkg:
+                if pkg["service_style"] and not service_style:
+                    service_style = pkg["service_style"]
+                if pkg["headcount_tier"] and not headcount_tier:
+                    headcount_tier = pkg["headcount_tier"]
+                if pkg["price"] and not revenue:
+                    revenue = float(pkg["price"])
         if payment_method not in {m[0] for m in PAYMENT_METHODS}:
             payment_method = "cash"
 
-        client = conn.execute(
-            "SELECT name FROM clients WHERE id = ?", (client_id,)
-        ).fetchone()
-        if not client:
-            return RedirectResponse(url("/bookings?tab=add"), status_code=303)
+        lat_val = float(lat) if lat else None
+        lng_val = float(lng) if lng else None
+
         conn.execute(
             """INSERT INTO appointments
             (client_id, client_name, date, start_time, end_time, service_style,
-             headcount_tier, revenue, transport_cost, payment_method, status)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
-            (client_id, client["name"], date_val, start_time, end_time,
-             service_style, headcount_tier, revenue, transport_cost, payment_method, status),
+             headcount_tier, revenue, transport_cost, payment_method, status,
+             location, lat, lng)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (client_id, client_name, date_val, start_time, end_time,
+             service_style, headcount_tier, revenue, transport_cost, payment_method, status,
+             location.strip(), lat_val, lng_val),
         )
         appt_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
         photo_path = await _save_booking_photo(appt_id, photo)
@@ -621,7 +701,9 @@ async def booking_create(
 @router.post("/bookings/{appt_id}/edit")
 async def booking_update(
     appt_id: int,
-    client_id: int = Form(...),
+    client_id: int = Form(0),
+    new_client_name: str = Form(""),
+    new_client_phone: str = Form(""),
     date_val: str = Form(..., alias="date"),
     start_time: str = Form(""),
     end_time: str = Form(""),
@@ -632,6 +714,9 @@ async def booking_update(
     transport_cost: float = Form(0),
     payment_method: str = Form("cash"),
     status: str = Form("confirmed"),
+    location: str = Form(""),
+    lat: str = Form(""),
+    lng: str = Form(""),
     photo: UploadFile | None = File(None),
 ):
     today = date.today().isoformat()
@@ -653,26 +738,42 @@ async def booking_update(
         if appt["date"] < today or appt["status"] in ("completed", "cancelled", "no_show"):
             return RedirectResponse(url("/bookings?tab=upcoming"), status_code=302)
 
-        client = conn.execute(
-            "SELECT name FROM clients WHERE id = ?", (client_id,)
-        ).fetchone()
-        if not client:
+        resolved = _resolve_client(conn, client_id, new_client_name, new_client_phone)
+        if not resolved:
             return RedirectResponse(url(f"/bookings?tab=edit&id={appt_id}"), status_code=303)
+        client_id, client_name = resolved
+
+        if package_id == "tbd":
+            if status == "inquiry":
+                service_style = ""
+                headcount_tier = ""
+        else:
+            pkg = package_by_id(conn, package_id)
+            if pkg:
+                if pkg["service_style"] and not service_style:
+                    service_style = pkg["service_style"]
+                if pkg["headcount_tier"] and not headcount_tier:
+                    headcount_tier = pkg["headcount_tier"]
+
+        client = {"name": client_name}
 
         photo_path = appt["photo_path"] if "photo_path" in appt.keys() else ""
         new_photo = await _save_booking_photo(appt_id, photo)
         if new_photo:
             photo_path = new_photo
 
+        lat_val = float(lat) if lat else None
+        lng_val = float(lng) if lng else None
+
         conn.execute(
             """UPDATE appointments SET
                client_id=?, client_name=?, date=?, start_time=?, end_time=?,
                service_style=?, headcount_tier=?, revenue=?, transport_cost=?, payment_method=?,
-               status=?, photo_path=?
+               status=?, photo_path=?, location=?, lat=?, lng=?
                WHERE id=?""",
             (client_id, client["name"], date_val, start_time, end_time,
              service_style, headcount_tier, revenue, transport_cost, payment_method, status,
-             photo_path or "", appt_id),
+             photo_path or "", location.strip(), lat_val, lng_val, appt_id),
         )
         if appt["client_id"] != client_id:
             _refresh_client_ltv(conn, appt["client_id"])
@@ -946,7 +1047,7 @@ async def rate_card_page(request: Request):
 @router.get("/settings/packages", response_class=HTMLResponse)
 async def packages_settings(request: Request):
     with connect() as conn:
-        packages = load_packages(conn, active_only=False)
+        packages = packages_with_galleries(conn, active_only=False)
     return templates.TemplateResponse(
         "packages_settings.html",
         {
@@ -975,6 +1076,33 @@ async def packages_settings_save(request: Request):
                    WHERE id=?""",
                 (str(label).strip(), price, active, pid),
             )
+        for pkg in load_packages(conn, active_only=False):
+            pid = pkg["id"]
+            files = [
+                v for k, v in form.multi_items()
+                if k == f"images_{pid}" and hasattr(v, "filename") and v.filename
+            ]
+            await _save_package_images(conn, pid, files)
+    return RedirectResponse(url("/settings/packages?saved=1"), status_code=303)
+
+
+@router.post("/settings/packages/{package_id}/image/{image_id}/delete")
+async def package_image_delete(package_id: str, image_id: int):
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT path FROM package_images WHERE id = ? AND package_id = ?",
+            (image_id, package_id),
+        ).fetchone()
+        if row and row["path"]:
+            if "uploads/packages/" in row["path"]:
+                rel = row["path"].split("uploads/packages/")[-1].split("?")[0]
+                path = BASE / "static" / "uploads" / "packages" / rel
+                if path.is_file():
+                    path.unlink(missing_ok=True)
+        conn.execute(
+            "DELETE FROM package_images WHERE id = ? AND package_id = ?",
+            (image_id, package_id),
+        )
     return RedirectResponse(url("/settings/packages?saved=1"), status_code=303)
 
 

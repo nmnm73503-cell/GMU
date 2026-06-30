@@ -96,3 +96,30 @@ def payment_label(method: str) -> str:
 
 def package_display_label(pkg: dict) -> str:
     return pkg.get("label") or pkg["id"]
+
+
+def load_package_images(conn: sqlite3.Connection, package_id: str) -> list[dict]:
+    rows = conn.execute(
+        """SELECT * FROM package_images WHERE package_id = ?
+           ORDER BY sort_order, id""",
+        (package_id,),
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def load_all_package_images(conn: sqlite3.Connection) -> dict[str, list[str]]:
+    rows = conn.execute(
+        "SELECT package_id, path FROM package_images ORDER BY package_id, sort_order, id"
+    ).fetchall()
+    out: dict[str, list[str]] = {}
+    for row in rows:
+        out.setdefault(row["package_id"], []).append(row["path"])
+    return out
+
+
+def packages_with_galleries(conn: sqlite3.Connection, active_only: bool = True) -> list[dict]:
+    packages = load_packages(conn, active_only=active_only)
+    galleries = load_all_package_images(conn)
+    for pkg in packages:
+        pkg["images"] = galleries.get(pkg["id"], [])
+    return packages

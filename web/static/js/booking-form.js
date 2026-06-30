@@ -1,23 +1,51 @@
 (function () {
-  var pkg = document.getElementById("service-package");
+  var picker = document.getElementById("glam-picker");
+  var pkgInput = document.getElementById("package-id-input");
   var revenue = document.getElementById("revenue-input");
   var style = document.getElementById("service-style-input");
   var tier = document.getElementById("headcount-tier-input");
   var startSel = document.getElementById("start-time-select");
   var endSel = document.getElementById("end-time-select");
-  if (!pkg || !revenue) return;
+  var clientSelect = document.getElementById("client-select");
+  var toggleNew = document.getElementById("toggle-new-client");
+  var newPanel = document.getElementById("new-client-panel");
+  var newName = document.getElementById("new-client-name");
+  var form = document.getElementById("booking-form");
 
-  function applyPackage() {
-    var opt = pkg.options[pkg.selectedIndex];
-    if (!opt) return;
-    var price = opt.getAttribute("data-price");
-    var svc = opt.getAttribute("data-style") || "";
-    var t = opt.getAttribute("data-tier") || "";
-    if (price !== null && price !== "") {
-      revenue.value = price;
-    }
+  function selectGlam(card) {
+    if (!picker || !pkgInput) return;
+    picker.querySelectorAll(".glam-card").forEach(function (c) {
+      c.classList.remove("selected");
+    });
+    card.classList.add("selected");
+    var id = card.getAttribute("data-id");
+    pkgInput.value = id;
+    var price = card.getAttribute("data-price");
+    var svc = card.getAttribute("data-style") || "";
+    var t = card.getAttribute("data-tier") || "";
     if (style) style.value = svc;
     if (tier) tier.value = t;
+    if (revenue) {
+      if (id === "tbd") {
+        revenue.value = "";
+        revenue.placeholder = "0 — decide on site";
+      } else if (price !== null && price !== "") {
+        revenue.value = price;
+      }
+    }
+    var statusEl = document.getElementById("booking-status");
+    if (statusEl && id === "tbd" && !document.querySelector("[name=date]")?.dataset?.editing) {
+      statusEl.value = "inquiry";
+    }
+  }
+
+  if (picker) {
+    picker.addEventListener("click", function (e) {
+      var card = e.target.closest(".glam-card");
+      if (card) selectGlam(card);
+    });
+    var selected = picker.querySelector(".glam-card.selected");
+    if (selected) selectGlam(selected);
   }
 
   function parseSlot(slot) {
@@ -55,9 +83,44 @@
     }
   }
 
-  pkg.addEventListener("change", applyPackage);
-  if (startSel) {
-    startSel.addEventListener("change", setEndFromStart);
+  if (startSel) startSel.addEventListener("change", setEndFromStart);
+
+  if (toggleNew && newPanel) {
+    toggleNew.addEventListener("click", function () {
+      var open = newPanel.hasAttribute("hidden");
+      if (open) {
+        newPanel.removeAttribute("hidden");
+        toggleNew.setAttribute("aria-expanded", "true");
+        toggleNew.textContent = "Cancel";
+        if (clientSelect) clientSelect.required = false;
+        if (newName) newName.focus();
+      } else {
+        newPanel.setAttribute("hidden", "");
+        toggleNew.setAttribute("aria-expanded", "false");
+        toggleNew.textContent = "+ New";
+        if (clientSelect) clientSelect.required = true;
+        if (newName) newName.value = "";
+      }
+    });
   }
-  if (!revenue.value) applyPackage();
+
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      var hasNew = newName && newName.value.trim();
+      if (!hasNew && clientSelect && !clientSelect.value) {
+        e.preventDefault();
+        alert("Select a client or tap + New to add one.");
+      }
+      if (hasNew && clientSelect) clientSelect.removeAttribute("required");
+    });
+  }
+
+  var preset = localStorage.getItem("gmu-preset-package");
+  if (preset && picker) {
+    var card = picker.querySelector('.glam-card[data-id="' + preset + '"]');
+    if (card) selectGlam(card);
+    localStorage.removeItem("gmu-preset-package");
+    var statusEl = document.getElementById("booking-status");
+    if (statusEl) statusEl.value = "inquiry";
+  }
 })();

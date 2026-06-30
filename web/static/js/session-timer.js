@@ -136,24 +136,17 @@
     return packages[0].id;
   }
 
-  function renderPackageSelect(selectedId) {
-    var byCat = {};
+  function renderSessionGlamPicker(selectedId) {
+    var html = '<div class="glam-picker glam-picker-compact" id="session-glam-picker">';
     packages.forEach(function (p) {
-      var cat = p.category || "other";
-      if (!byCat[cat]) byCat[cat] = [];
-      byCat[cat].push(p);
+      var sel = p.id === selectedId ? " selected" : "";
+      html +=
+        '<button type="button" class="glam-card glam-card-sm' + sel + '" data-id="' + escapeHtml(p.id) + '">' +
+        '<span class="glam-card-title">' + escapeHtml(p.label.split("(")[0].trim()) + "</span>" +
+        '<span class="glam-card-price">' + fmtMoney(p.price) + "</span></button>";
     });
-    var html = '<select id="session-package-select" class="session-select">';
-    Object.keys(byCat).forEach(function (cat) {
-      html += '<optgroup label="' + escapeHtml(categoryLabels[cat] || cat) + '">';
-      byCat[cat].forEach(function (p) {
-        html += '<option value="' + escapeHtml(p.id) + '"' +
-          (p.id === selectedId ? " selected" : "") + ">" +
-          escapeHtml(p.label) + " — " + fmtMoney(p.price) + "</option>";
-      });
-      html += "</optgroup>";
-    });
-    html += "</select>";
+    html += "</div>";
+    html += '<input type="hidden" id="session-package-id" value="' + escapeHtml(selectedId || (packages[0] && packages[0].id) || "") + '">';
     return html;
   }
 
@@ -297,7 +290,7 @@
       html += '<label class="session-label">Name <span class="label-hint">(optional)</span></label>';
       html += '<input type="text" id="session-face-name" class="session-input" placeholder="e.g. bridesmaid, guest 1…">';
       html += '<label class="session-label">Glam package</label>';
-      html += renderPackageSelect(defaultPackageId(host));
+      html += renderSessionGlamPicker(defaultPackageId(host));
       html += '<button type="button" class="btn btn-primary session-add-face-btn" style="margin-top:0.65rem">Add face</button>';
       html += "</div>";
 
@@ -330,14 +323,25 @@
       });
     });
 
+    root.querySelectorAll("#session-glam-picker .glam-card").forEach(function (card) {
+      card.addEventListener("click", function () {
+        root.querySelectorAll("#session-glam-picker .glam-card").forEach(function (c) {
+          c.classList.remove("selected");
+        });
+        card.classList.add("selected");
+        var hid = document.getElementById("session-package-id");
+        if (hid) hid.value = card.getAttribute("data-id");
+      });
+    });
+
     var addBtn = root.querySelector(".session-add-face-btn");
     if (addBtn) {
       addBtn.addEventListener("click", function () {
         var state = getState();
         var nameEl = document.getElementById("session-face-name");
-        var pkgEl = document.getElementById("session-package-select");
-        if (!pkgEl) return;
-        var pkg = pkgById(pkgEl.value);
+        var pkgIdEl = document.getElementById("session-package-id");
+        var pkgId = pkgIdEl ? pkgIdEl.value : "";
+        var pkg = pkgById(pkgId);
         if (!pkg) return;
         faceCounter += 1;
         state.faces.push({

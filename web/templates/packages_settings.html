@@ -2,11 +2,11 @@
 {% set active = 'more' %}
 {% block title %}Service packages{% endblock %}
 {% block header %}Packages & prices{% endblock %}
-{% block subtitle %}Edit rates from your ODS price list{% endblock %}
+{% block subtitle %}Edit rates & portfolio photos{% endblock %}
 {% block content %}
 {% if request.query_params.get('saved') %}<div class="alert">Package prices saved.</div>{% endif %}
-<p class="info-lead">Rates match your <strong>My Career</strong> spreadsheet. 1–2 people and 3+ people are priced separately. Revenue on new bookings auto-fills but stays editable.</p>
-<form method="post" action="{{ url('/settings/packages') }}" class="packages-editor">
+<p class="info-lead">Set prices and upload <strong>swipeable photos</strong> per glam — they appear in Bookings → Menu.</p>
+<form method="post" action="{{ url('/settings/packages') }}" class="packages-editor" enctype="multipart/form-data">
 {% for cat, items in packages_grouped.items() %}
 <section class="glass rate-card-section motion-section">
   <p class="section-title" style="margin-top:0">{{ category_labels.get(cat, cat|title) }}</p>
@@ -25,12 +25,25 @@
       <input type="checkbox" name="active_{{ pkg['id'] }}" value="1" {% if pkg['active'] %}checked{% endif %}>
       <span>Active</span>
     </label>
+    {% if pkg['id'] != 'custom' %}
+    <label class="package-edit-label">
+      <span>Portfolio photos</span>
+      <input name="images_{{ pkg['id'] }}" type="file" accept="image/*" multiple>
+    </label>
+    {% if pkg.get('images') %}
+    <div class="package-thumb-row">
+      {% for img in pkg['images'] %}
+      <img src="{{ img }}" alt="" class="package-edit-thumb">
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endif %}
   </div>
   {% endfor %}
 </section>
 {% endfor %}
-<button type="submit" class="btn btn-primary">Save all prices</button>
+<button type="submit" class="btn btn-primary">Save all</button>
 </form>
-<a href="{{ url('/rate-card') }}" class="btn btn-accent" style="display:block;margin-top:0.75rem;text-align:center">View rate card</a>
+<a href="{{ url('/bookings') }}?tab=menu" class="btn btn-accent" style="display:block;margin-top:0.75rem;text-align:center">View glam menu</a>
 <a href="{{ url('/settings') }}" class="btn" style="display:block;margin-top:0.5rem;text-align:center;color:var(--muted)">← Settings</a>
 {% endblock %}

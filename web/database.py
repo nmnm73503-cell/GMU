@@ -126,6 +126,25 @@ def init_db() -> None:
             )
         except sqlite3.OperationalError:
             pass
+        try:
+            conn.execute("ALTER TABLE appointments ADD COLUMN lat REAL")
+        except sqlite3.OperationalError:
+            pass
+        try:
+            conn.execute("ALTER TABLE appointments ADD COLUMN lng REAL")
+        except sqlite3.OperationalError:
+            pass
+        conn.executescript(
+            """
+            CREATE TABLE IF NOT EXISTS package_images (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                package_id TEXT NOT NULL,
+                path TEXT NOT NULL,
+                sort_order INTEGER DEFAULT 0
+            );
+            CREATE INDEX IF NOT EXISTS idx_package_images_pkg ON package_images(package_id);
+            """
+        )
         defaults = {
             "business_name": "Glam Me Upp",
             "artist_name": "Nawal",
