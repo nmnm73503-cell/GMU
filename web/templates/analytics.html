@@ -14,6 +14,14 @@
 </div>
 
 <p class="section-title" style="margin-top:0">Period overview</p>
+<div class="kpi-switcher" role="tablist" aria-label="Insights sections">
+  <button type="button" class="kpi-pill active" data-kpi="overview" role="tab">Overview</button>
+  <button type="button" class="kpi-pill" data-kpi="income" role="tab">Income</button>
+  <button type="button" class="kpi-pill" data-kpi="kpis" role="tab">KPIs</button>
+  <button type="button" class="kpi-pill" data-kpi="charts" role="tab">Charts</button>
+</div>
+
+<div class="kpi-panel active" data-kpi-panel="overview">
 <div class="stat-grid">
   <div class="stat-card glass"><div class="label">Total revenue</div><div class="value">{{ fmt_money(summary['revenue']) }}</div></div>
   <div class="stat-card glass"><div class="label">Net profit</div><div class="value">{{ fmt_money(summary['net_profit']) }}</div></div>
@@ -26,7 +34,9 @@
   <div class="stat-card glass"><div class="label">Hourly rate</div><div class="value">{{ fmt_money(summary['hourly_rate']) }}</div></div>
   <div class="stat-card glass"><div class="label">Houses visited</div><div class="value">{{ summary['houses'] }}</div></div>
 </div>
+</div>
 
+<div class="kpi-panel" data-kpi-panel="income">
 <p class="section-title">Income split</p>
 <div class="stat-grid">
   <div class="stat-card glass"><div class="label">Total earned</div><div class="value">{{ fmt_money(summary['earned']) }}</div></div>
@@ -40,7 +50,9 @@
   <div class="stat-card glass"><div class="label">Daily alloc. expenses</div><div class="value">{{ fmt_money(summary['alloc_expenses']) }}</div></div>
   <div class="stat-card glass"><div class="label">Unique clients</div><div class="value">{{ summary['unique_clients'] }}</div></div>
 </div>
+</div>
 
+<div class="kpi-panel" data-kpi-panel="kpis">
 <p class="section-title">KPIs</p>
 <div class="stat-grid">
   <div class="stat-card glass"><div class="label">Avg people / house</div><div class="value">{{ '%.1f'|format(summary['avg_people_per_house']) }}</div></div>
@@ -58,7 +70,9 @@
   <span class="label">Best seller</span>
   <strong>{{ summary['best_seller'] }}</strong>
 </div>
+</div>
 
+<div class="kpi-panel" data-kpi-panel="charts">
 <div class="chart-grid">
   <div class="chart-wrap glass motion-fade">
     <p class="section-title" style="margin-top:0">Revenue by month</p>
@@ -72,6 +86,7 @@
 <div class="chart-wrap glass motion-fade">
   <p class="section-title" style="margin-top:0">Income allocation</p>
   <canvas id="incomeChart" height="160"></canvas>
+</div>
 </div>
 
 <p class="section-title">Monthly breakdown</p>
@@ -186,12 +201,13 @@
 {% endif %}
 {% endblock %}
 {% block scripts %}
+<script src="{{ static_url('js/insights-kpi.js') }}?v=1"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script>
 (function(){
-  var revLabels = {{ insights['revenue_by_month'] | map(attribute='m') | list | tojson }};
+  var revLabels = {{ insights['revenue_by_month'] | map(attribute='label') | list | tojson }};
   var revValues = {{ insights['revenue_by_month'] | map(attribute='total') | list | tojson }};
-  var profitLabels = {{ insights['profit_by_month'] | map(attribute='m') | list | tojson }};
+  var profitLabels = {{ insights['profit_by_month'] | map(attribute='label') | list | tojson }};
   var profitValues = {{ insights['profit_by_month'] | map(attribute='net') | list | tojson }};
   var incomeValues = {{ [summary['savings'], summary['business'], summary['personal'], summary['drawings']] | tojson }};
   var charts = [];

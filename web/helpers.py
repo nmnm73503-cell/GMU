@@ -48,6 +48,15 @@ def has_custom_logo() -> bool:
     return bool(get_setting("logo_path", ""))
 
 
+def format_month_short(month: str) -> str:
+    """YYYY-MM → Jan 26."""
+    try:
+        y, mo = int(month[:4]), int(month[5:7])
+        return date(y, mo, 1).strftime("%b %y")
+    except (TypeError, ValueError):
+        return month
+
+
 def period_filter(period: str) -> tuple[str, str]:
     today = date.today()
     if period == "week":

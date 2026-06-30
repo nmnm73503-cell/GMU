@@ -5,7 +5,7 @@ import calendar
 import sqlite3
 from datetime import date
 
-from helpers import DATA_START
+from helpers import DATA_START, format_month_short
 
 _APPT_FILTER = (
     "date BETWEEN ? AND ? AND status NOT IN ('cancelled', 'no_show')"
@@ -118,7 +118,7 @@ def _month_metrics(
 
     return {
         "month": month,
-        "label": date(y, mo, 1).strftime("%B %Y"),
+        "label": date(y, mo, 1).strftime("%b %y"),
         "revenue": revenue,
         "total_expenses": transport,
         "net_profit": net,
@@ -261,7 +261,8 @@ def fetch_insights(conn: sqlite3.Connection, start: str, end: str) -> dict:
     }
 
     revenue_by_month = [
-        r for r in conn.execute(
+        {**dict(r), "label": format_month_short(r["m"])}
+        for r in conn.execute(
             f"""SELECT substr(date,1,7) as m, SUM(revenue) as total,
                        SUM(transport_cost) as transport,
                        COUNT(*) as bookings
@@ -273,7 +274,8 @@ def fetch_insights(conn: sqlite3.Connection, start: str, end: str) -> dict:
     ]
 
     profit_by_month = [
-        r for r in conn.execute(
+        {**dict(r), "label": format_month_short(r["m"])}
+        for r in conn.execute(
             f"""SELECT substr(date,1,7) as m,
                        SUM(revenue) - SUM(transport_cost) as net
                 FROM appointments WHERE {_APPT_FILTER}

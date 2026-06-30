@@ -14,6 +14,7 @@ from config import BASE_PATH, DEDICATED_FOR, PUBLIC_URL
 from database import connect, get_setting, init_db, is_seeded, set_setting
 from helpers import (
     calc_split,
+    format_month_short,
     get_split_pcts,
     has_custom_logo,
     logo_url,
@@ -156,6 +157,18 @@ async def _save_booking_photo(appt_id: int, photo: UploadFile | None) -> str | N
     return static_url(rel)
 
 
+async def _save_face_photo(appt_id: int, face_id: str, photo: UploadFile) -> str:
+    ext = Path(photo.filename or "").suffix.lower()
+    if ext not in {".jpg", ".jpeg", ".png", ".webp", ".gif"}:
+        ext = ".jpg"
+    safe_id = "".join(c for c in face_id if c.isalnum() or c in "-_")[:64] or "face"
+    rel = f"uploads/faces/{appt_id}/{safe_id}{ext}"
+    dest = BASE / "static" / rel
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_bytes(await photo.read())
+    return static_url(rel)
+
+
 def _remove_booking_photo(photo_path: str | None) -> None:
     if not photo_path or "uploads/bookings/" not in photo_path:
         return
@@ -257,6 +270,7 @@ templates.env.globals.update(
         "payment_label": payment_label,
         "get_split_pcts": get_split_pcts,
         "calc_split": calc_split,
+        "fmt_month_short": format_month_short,
     }
 )
 
@@ -537,6 +551,24 @@ def _iso_to_time_slot(iso_val: str) -> str:
         return dt.strftime("%I:%M %p")
     except (TypeError, ValueError):
         return ""
+
+
+@router.post("/bookings/{appt_id}/session/face-photo")
+async def session_face_photo(
+    appt_id: int,
+    face_id: str = Form(...),
+    photo: UploadFile = File(...),
+):
+    if not photo.filename:
+        raise HTTPException(400, "No photo")
+    with connect() as conn:
+        appt = conn.execute(
+            "SELECT id FROM appointments WHERE id = ?", (appt_id,)
+        ).fetchone()
+        if not appt:
+            raise HTTPException(404, "Booking not found")
+    path = await _save_face_photo(appt_id, face_id, photo)
+    return JSONResponse({"photo_path": path})
 
 
 @router.post("/bookings/session/complete")

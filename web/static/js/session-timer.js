@@ -152,6 +152,54 @@
     return packages[0].id;
   }
 
+  function facePhotoHtml(face, isActive) {
+    if (face.photo_path) {
+      return (
+        '<div class="session-face-photo-wrap">' +
+        '<img src="' + escapeHtml(face.photo_path) + '" alt="" class="session-face-thumb">' +
+        '<label class="btn-edit session-photo-btn">Change<input type="file" accept="image/*" hidden class="session-face-photo-input" data-face-id="' +
+        escapeHtml(face.id) + '"></label></div>'
+      );
+    }
+    return (
+      '<label class="btn-edit session-photo-btn">' + (isActive ? "Photo" : "Add photo") +
+      '<input type="file" accept="image/*" hidden class="session-face-photo-input" data-face-id="' +
+      escapeHtml(face.id) + '"></label>'
+    );
+  }
+
+  function uploadFacePhoto(apptId, faceId, file, onDone) {
+    var base = document.body.getAttribute("data-static-base") || "";
+    var fd = new FormData();
+    fd.append("face_id", faceId);
+    fd.append("photo", file);
+    fetch(base + "/bookings/" + apptId + "/session/face-photo", { method: "POST", body: fd })
+      .then(function (r) {
+        if (!r.ok) throw new Error("upload");
+        return r.json();
+      })
+      .then(function (data) {
+        if (onDone) onDone(data.photo_path || "");
+      })
+      .catch(function () {
+        alert("Could not upload photo. Try again.");
+      });
+  }
+
+  function setFacePhoto(faceId, photoPath) {
+    var state = getState();
+    if (state.currentFace && state.currentFace.id === faceId) {
+      state.currentFace.photo_path = photoPath;
+    } else {
+      state.faces = (state.faces || []).map(function (f) {
+        if (f.id === faceId) f.photo_path = photoPath;
+        return f;
+      });
+    }
+    saveState(state);
+    render();
+  }
+
   function renderSessionGlamPicker(selectedId) {
     var html = '<div class="glam-picker glam-picker-compact" id="session-glam-picker">';
     packages.forEach(function (p) {
@@ -305,6 +353,7 @@
             '<div class="sub">' + escapeHtml(state.currentFace.label) + " · " + fmtMoney(state.currentFace.price) +
             " · <span class=\"session-face-time\">" + faceDurationMinutes(state.currentFace) + " min</span></div>" +
             "</div>" +
+            facePhotoHtml(state.currentFace, true) +
             '<button type="button" class="btn-edit session-finish-face">Finish face</button></div>';
         }
 
@@ -318,6 +367,7 @@
             (f.duration_minutes != null ? (" · " + f.duration_minutes + " min") : "") +
             "</div>" +
             "</div>" +
+            facePhotoHtml(f, false) +
             '<button type="button" class="btn-delete-inline session-remove-face" data-face-id="' +
             escapeHtml(f.id) + '">Remove</button></div>';
         });
@@ -434,6 +484,20 @@
       });
     }
 
+    root.querySelectorAll(".session-face-photo-input").forEach(function (input) {
+      input.addEventListener("change", function () {
+        var file = input.files && input.files[0];
+        if (!file) return;
+        var state = getState();
+        var faceId = input.getAttribute("data-face-id");
+        if (!state.hostApptId || !faceId) return;
+        uploadFacePhoto(state.hostApptId, faceId, file, function (path) {
+          setFacePhoto(faceId, path);
+        });
+        input.value = "";
+      });
+    });
+
     root.querySelectorAll(".session-remove-face").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var faceId = btn.getAttribute("data-face-id");
@@ -497,6 +561,7 @@
           started_ms: f.started_ms || null,
           ended_ms: f.ended_ms || null,
           duration_minutes: f.duration_minutes != null ? f.duration_minutes : null,
+          photo_path: f.photo_path || "",
         };
       }),
       started_at: startedAt,

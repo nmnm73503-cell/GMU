@@ -28,23 +28,33 @@
   {% include 'partials/glam_picker.html' %}
 
   <label>Date *</label>
-  <input name="date" type="date" required value="{{ appt['date'] if appt else '' }}">
+  <div class="booking-calendar glass" id="booking-calendar"
+       data-value="{{ appt['date'] if appt else '' }}"
+       {% if appt %}data-editing="1"{% endif %}></div>
+  <input type="hidden" name="date" id="booking-date" required
+         value="{{ appt['date'] if appt else '' }}">
 
+  {% if appt %}
   <label>Start / End</label>
   <div class="inline-fields">
     <select name="start_time" id="start-time-select">
       <option value="">—</option>
       {% for slot in time_slots %}
-      <option value="{{ slot }}" {% if appt and appt['start_time'] == slot %}selected{% endif %}>{{ slot }}</option>
+      <option value="{{ slot }}" {% if appt['start_time'] == slot %}selected{% endif %}>{{ slot }}</option>
       {% endfor %}
     </select>
     <select name="end_time" id="end-time-select">
       <option value="">—</option>
       {% for slot in time_slots %}
-      <option value="{{ slot }}" {% if appt and appt['end_time'] == slot %}selected{% endif %}>{{ slot }}</option>
+      <option value="{{ slot }}" {% if appt['end_time'] == slot %}selected{% endif %}>{{ slot }}</option>
       {% endfor %}
     </select>
   </div>
+  {% else %}
+  <input type="hidden" name="start_time" value="">
+  <input type="hidden" name="end_time" value="">
+  <p class="session-hint">Start &amp; end times are set automatically when you run a live Session.</p>
+  {% endif %}
 
   <label>Location</label>
   <input name="location" id="location-label" type="text" placeholder="Address or place name"

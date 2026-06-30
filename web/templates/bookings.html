@@ -154,15 +154,16 @@
 {% endblock %}
 {% block scripts %}
 {% if tab == 'add' or tab == 'edit' %}
+<script src="{{ static_url('js/booking-form.js') }}?v=4"></script>
+<script src="{{ static_url('js/booking-calendar.js') }}?v=1"></script>
 {% if cfg.get('google_maps_api_key') %}
-<script src="{{ static_url('js/location-google.js') }}?v=1"></script>
+<script src="{{ static_url('js/location-google.js') }}?v=2"></script>
 {% else %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="{{ static_url('js/booking-form.js') }}?v=4"></script>
 <script src="{{ static_url('js/location-picker.js') }}?v=2"></script>
 {% endif %}
 {% elif tab == 'session' %}
 <script src="{{ static_url('js/receipt-share.js') }}?v=1"></script>
-<script src="{{ static_url('js/session-timer.js') }}?v=4"></script>
+<script src="{{ static_url('js/session-timer.js') }}?v=5"></script>
 {% endif %}
 {% endblock %}

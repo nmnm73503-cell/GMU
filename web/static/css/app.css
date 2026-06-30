@@ -1544,3 +1544,110 @@ main > .section-title {
   .glam-picker-compact { grid-template-columns: 1fr 1fr; }
 }
 
+/* Header accent */
+.header-accent {
+  height: 2px;
+  margin: 0 -1.25rem 0.55rem;
+  background: linear-gradient(90deg, transparent, var(--accent, #c9a227), transparent);
+  opacity: 0.85;
+}
+
+/* Booking calendar */
+.booking-calendar {
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.cal-title { font-weight: 600; font-size: 0.95rem; }
+.cal-nav {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: var(--card);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.cal-weekdays, .cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+  text-align: center;
+}
+.cal-weekday {
+  font-size: 0.65rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  padding: 0.2rem 0;
+}
+.cal-day {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: inherit;
+}
+.cal-day:hover:not(:disabled) { background: var(--glass-border); }
+.cal-today { font-weight: 700; }
+.cal-selected {
+  background: var(--accent, #000) !important;
+  color: #fff !important;
+}
+[data-theme="dark"] .cal-selected { color: #000 !important; background: #fff !important; }
+.cal-disabled { opacity: 0.35; cursor: not-allowed; }
+.cal-day-empty { pointer-events: none; }
+.cal-selected-label { font-size: 0.8rem; color: var(--muted); margin: 0.5rem 0 0; }
+
+/* Insights KPI switcher */
+.kpi-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.85rem;
+}
+.kpi-pill {
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--card);
+  font-size: 0.75rem;
+  cursor: pointer;
+  color: var(--muted);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.kpi-pill.active {
+  background: var(--accent, #000);
+  color: #fff;
+  border-color: transparent;
+}
+[data-theme="dark"] .kpi-pill.active { color: #000; background: #fff; }
+.kpi-panel { display: none; }
+.kpi-panel.active { display: block; }
+
+/* Session face photos */
+.session-face-photo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+.session-face-thumb {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+}
+.session-photo-btn { font-size: 0.72rem; white-space: nowrap; }
+
+/* Google Places dropdown above map */
+.pac-container { z-index: 10000 !important; }

@@ -18,11 +18,12 @@
   </script>
   <link rel="icon" href="{{ static_url('img/favicon.svg') }}?v=12" type="image/svg+xml">
   <link rel="apple-touch-icon" href="{{ static_url('img/profile-icon.svg') }}?v=12">
-  <link rel="stylesheet" href="{{ static_url('css/app.css') }}?v=12">
+  <link rel="stylesheet" href="{{ static_url('css/app.css') }}?v=13">
   {% block head %}{% endblock %}
 </head>
 <body class="page-enter" data-static-base="{{ base_path }}">
   <header class="app-header">
+    <div class="header-accent" aria-hidden="true"></div>
     <div class="header-brand">
       {% with width=120, height=32 %}{% include 'partials/logo.html' %}{% endwith %}
       <div class="header-text">
