@@ -1428,6 +1428,13 @@ main > .section-title {
   padding: 0.55rem 0;
   border-bottom: 1px solid var(--border);
 }
+.session-face-row-active {
+  border: 1px solid var(--text);
+  border-radius: 10px;
+  padding: 0.65rem 0.65rem;
+  margin: 0.25rem 0 0.5rem;
+  background: rgba(0,0,0,0.03);
+}
 .session-face-row:last-child { border-bottom: none; }
 .session-face-icon {
   width: 2rem;

@@ -50,6 +50,7 @@
       startedAt: null,
       hostApptId: null,
       faces: [],
+      currentFace: null,
       phase: "pick",
       receipts: [],
       durationMinutes: 0,
@@ -112,6 +113,21 @@
     return Object.keys(groups).map(function (k) {
       return groups[k];
     });
+  }
+
+  function faceDurationMinutes(face) {
+    if (!face) return 0;
+    var start = face.started_ms || 0;
+    var end = face.ended_ms || 0;
+    if (!start) return 0;
+    var stop = end || Date.now();
+    return Math.max(0, Math.round((stop - start) / 60000));
+  }
+
+  function combinedFaces(state) {
+    var out = (state.faces || []).slice();
+    if (state.currentFace) out.push(state.currentFace);
+    return out;
   }
 
   function facesTotal(faces) {
@@ -215,8 +231,9 @@
     var html = "";
 
     if (state.phase === "receipt" && state.receipts && state.receipts.length) {
-      html += '<p class="info-lead">Session complete · ' + state.faces.length +
-        " face(s) · " + state.durationMinutes + " min</p>";
+      var faceCount = (state.faces || []).length;
+      html += '<p class="info-lead">Session complete · ' + faceCount +
+        " face(s) · " + state.durationMinutes + " min total</p>";
       state.receipts.forEach(function (r, i) {
         r.cfg = r.cfg || state.cfg || {};
         html += renderReceiptCard(r, i);
@@ -265,26 +282,41 @@
         html += "</div>";
       }
 
-      var groups = groupFaces(state.faces);
+      var allFaces = combinedFaces(state);
+      var groups = groupFaces(allFaces);
       if (groups.length) {
         html += '<div class="session-summary glass">';
-        html += "<h3>Faces done (" + state.faces.length + ")</h3>";
+        html += "<h3>Faces (" + allFaces.length + ")</h3>";
         html += '<div class="session-summary-chips">';
         groups.forEach(function (g) {
           html += '<span class="session-done-chip">' + g.count + "× " + escapeHtml(g.label.split("(")[0].trim()) + "</span>";
         });
         html += "</div>";
-        html += '<p class="session-running-total">Glam subtotal: <strong>' + fmtMoney(facesTotal(state.faces)) + "</strong></p>";
+        html += '<p class="session-running-total">Glam subtotal: <strong>' + fmtMoney(facesTotal(allFaces)) + "</strong></p>";
         html += "</div>";
 
         html += '<div class="session-face-list">';
-        state.faces.forEach(function (f) {
+        if (state.currentFace) {
+          html +=
+            '<div class="session-face-row session-face-row-active">' +
+            '<span class="session-face-icon" aria-hidden="true"></span>' +
+            '<div class="session-face-info">' +
+            "<strong>" + escapeHtml(state.currentFace.name || "Current face") + "</strong>" +
+            '<div class="sub">' + escapeHtml(state.currentFace.label) + " · " + fmtMoney(state.currentFace.price) +
+            " · <span class=\"session-face-time\">" + faceDurationMinutes(state.currentFace) + " min</span></div>" +
+            "</div>" +
+            '<button type="button" class="btn-edit session-finish-face">Finish face</button></div>';
+        }
+
+        (state.faces || []).forEach(function (f) {
           html +=
             '<div class="session-face-row">' +
             '<span class="session-face-icon" aria-hidden="true"></span>' +
             '<div class="session-face-info">' +
             "<strong>" + escapeHtml(f.name || "Face") + "</strong>" +
-            '<div class="sub">' + escapeHtml(f.label) + " · " + fmtMoney(f.price) + "</div>" +
+            '<div class="sub">' + escapeHtml(f.label) + " · " + fmtMoney(f.price) +
+            (f.duration_minutes != null ? (" · " + f.duration_minutes + " min") : "") +
+            "</div>" +
             "</div>" +
             '<button type="button" class="btn-delete-inline session-remove-face" data-face-id="' +
             escapeHtml(f.id) + '">Remove</button></div>';
@@ -295,18 +327,19 @@
       }
 
       html += '<div class="session-add-face glass">';
-      html += "<h3>Add a face</h3>";
+      html += "<h3>Start next face</h3>";
       html += '<label class="session-label">Name <span class="label-hint">(optional)</span></label>';
       html += '<input type="text" id="session-face-name" class="session-input" placeholder="e.g. bridesmaid, guest 1…">';
       html += '<label class="session-label">Glam package</label>';
       html += renderSessionGlamPicker(defaultPackageId(host));
-      html += '<button type="button" class="btn btn-primary session-add-face-btn" style="margin-top:0.65rem">Add face</button>';
+      html += '<button type="button" class="btn btn-primary session-add-face-btn" style="margin-top:0.65rem">' +
+        (state.currentFace ? "Start next face" : "Start first face") + "</button>";
       html += "</div>";
 
       html += '<button type="button" class="btn btn-accent session-finish-btn" style="margin-top:0.75rem"' +
-        (state.faces.length ? "" : " disabled") + ">Finish session &amp; receipt</button>";
-      if (!state.faces.length) {
-        html += '<p class="session-hint">Add at least one face before finishing.</p>';
+        ((state.faces && state.faces.length) || state.currentFace ? "" : " disabled") + ">Finish session &amp; receipt</button>";
+      if (!(state.faces && state.faces.length) && !state.currentFace) {
+        html += '<p class="session-hint">Start at least one face before finishing.</p>';
       }
     }
 
@@ -363,15 +396,39 @@
         var pkg = pkgById(pkgId);
         if (!pkg) return;
         faceCounter += 1;
-        state.faces.push({
-          id: "face-" + Date.now() + "-" + faceCounter,
+        var now = Date.now();
+        if (state.currentFace && state.currentFace.started_ms) {
+          state.currentFace.ended_ms = now;
+          state.currentFace.duration_minutes = faceDurationMinutes(state.currentFace);
+          state.faces.push(state.currentFace);
+        }
+        state.currentFace = {
+          id: "face-" + now + "-" + faceCounter,
           name: (nameEl && nameEl.value.trim()) || "",
           package_id: pkg.id,
           label: pkg.label,
           price: pkg.price,
           style: pkg.style,
           tier: pkg.tier,
-        });
+          started_ms: now,
+          ended_ms: null,
+          duration_minutes: null,
+        };
+        if (nameEl) nameEl.value = "";
+        saveState(state);
+        render();
+      });
+    }
+
+    var finishFaceBtn = root.querySelector(".session-finish-face");
+    if (finishFaceBtn) {
+      finishFaceBtn.addEventListener("click", function () {
+        var state = getState();
+        if (!state.currentFace || !state.currentFace.started_ms) return;
+        state.currentFace.ended_ms = Date.now();
+        state.currentFace.duration_minutes = faceDurationMinutes(state.currentFace);
+        state.faces.push(state.currentFace);
+        state.currentFace = null;
         saveState(state);
         render();
       });
@@ -405,8 +462,8 @@
 
   function finishSession() {
     var state = getState();
-    if (!state.hostApptId || !state.faces.length) {
-      alert("Add at least one face before finishing.");
+    if (!state.hostApptId || (!(state.faces && state.faces.length) && !state.currentFace)) {
+      alert("Start at least one face before finishing.");
       return;
     }
 
@@ -414,6 +471,15 @@
     if (finishBtn) {
       finishBtn.disabled = true;
       finishBtn.textContent = "Finishing…";
+    }
+
+    // Close the current face automatically
+    if (state.currentFace && state.currentFace.started_ms && !state.currentFace.ended_ms) {
+      state.currentFace.ended_ms = Date.now();
+      state.currentFace.duration_minutes = faceDurationMinutes(state.currentFace);
+      state.faces.push(state.currentFace);
+      state.currentFace = null;
+      saveState(state);
     }
 
     var finishedAt = new Date().toISOString();
@@ -425,7 +491,13 @@
     var payload = {
       appointment_id: state.hostApptId,
       faces: state.faces.map(function (f) {
-        return { package_id: f.package_id, name: f.name || "" };
+        return {
+          package_id: f.package_id,
+          name: f.name || "",
+          started_ms: f.started_ms || null,
+          ended_ms: f.ended_ms || null,
+          duration_minutes: f.duration_minutes != null ? f.duration_minutes : null,
+        };
       }),
       started_at: startedAt,
       finished_at: finishedAt,
@@ -474,6 +546,8 @@
     if (state.running && state.startedAt && state.phase === "running") {
       var sw = root.querySelector(".session-stopwatch");
       if (sw) sw.textContent = fmtElapsed(Date.now() - state.startedAt);
+      var cft = root.querySelector(".session-face-time");
+      if (cft && state.currentFace) cft.textContent = faceDurationMinutes(state.currentFace) + " min";
     }
   }
 
