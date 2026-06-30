@@ -2,7 +2,7 @@
 {% set active = 'bookings' %}
 {% block title %}Bookings{% endblock %}
 {% block header %}Bookings{% endblock %}
-{% block subtitle %}{% if tab == 'add' %}New inquiry{% elif tab == 'edit' %}Edit booking{% elif tab == 'session' %}Live session{% elif tab == 'menu' %}Glam menu{% else %}{{ upcoming|length }} upcoming{% endif %}{% endblock %}
+{% block subtitle %}{% if tab == 'add' %}New inquiry{% elif tab == 'edit' %}Edit booking{% elif tab == 'session' %}Live session{% else %}{{ upcoming|length }} upcoming{% endif %}{% endblock %}
 {% block head %}
 {% if tab == 'add' or tab == 'edit' %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
@@ -12,46 +12,14 @@
 <nav class="tab-bar tab-bar-bookings" aria-label="Bookings">
   <a href="{{ url('/bookings') }}?tab=add" class="{% if tab == 'add' %}active{% endif %}">+ Add</a>
   <a href="{{ url('/bookings') }}?tab=upcoming" class="{% if tab == 'upcoming' %}active{% endif %}">Upcoming</a>
-  <a href="{{ url('/bookings') }}?tab=menu" class="{% if tab == 'menu' %}active{% endif %}">Menu</a>
   <a href="{{ url('/bookings') }}?tab=session" class="{% if tab == 'session' %}active{% endif %}">Session</a>
   <a href="{{ url('/bookings') }}?tab=past" class="{% if tab == 'past' %}active{% endif %}">History</a>
   <a href="{{ url('/bookings') }}?tab=month" class="{% if tab == 'month' %}active{% endif %}">Month</a>
 </nav>
 
 {% if tab == 'add' %}
-<p class="info-lead">Quick inquiry — glam &amp; headcount can wait until you’re on site. Use <a href="{{ url('/bookings') }}?tab=menu">Menu</a> to show clients looks.</p>
+<p class="info-lead">Quick inquiry — glam &amp; headcount can wait until you’re on site. Use <a href="{{ url('/menu') }}">Menu</a> to show clients looks.</p>
 {% include 'partials/booking_form_fields.html' %}
-
-{% elif tab == 'menu' %}
-<p class="info-lead">Show clients each glam style — swipe photos or let them auto-play. Tap <strong>Book this</strong> to start an inquiry.</p>
-{% for pkg in menu_packages %}
-{% if pkg['id'] not in ('custom',) and pkg['active'] %}
-<article class="glass menu-package-card motion-fade">
-  <div class="menu-package-header">
-    <div>
-      <h2 class="menu-package-title">{{ pkg['label'] }}</h2>
-      {% if pkg['headcount_tier'] %}<p class="menu-package-meta">{{ pkg['headcount_tier'] }} people · {{ category_labels.get(pkg['category'], pkg['category']) }}</p>{% endif %}
-    </div>
-    <div class="menu-package-price">{{ fmt_money(pkg['price']) if pkg['price'] else 'Custom' }}</div>
-  </div>
-  {% if pkg['images'] %}
-  <div class="package-carousel" data-package-carousel>
-    {% for img in pkg['images'] %}
-    <div class="carousel-slide{% if loop.first %} active{% endif %}"><img src="{{ img }}" alt="{{ pkg['label'] }}"></div>
-    {% endfor %}
-    <div class="carousel-dots">
-      {% for img in pkg['images'] %}
-      <button type="button" class="carousel-dot{% if loop.first %} active{% endif %}" aria-label="Slide {{ loop.index }}"></button>
-      {% endfor %}
-    </div>
-  </div>
-  {% else %}
-  <div class="menu-package-placeholder">Add photos in <a href="{{ url('/settings/packages') }}">Settings → Packages</a></div>
-  {% endif %}
-  <a href="{{ url('/bookings') }}?tab=add" class="btn btn-primary menu-book-btn" data-pkg="{{ pkg['id'] }}">Book this style</a>
-</article>
-{% endif %}
-{% endfor %}
 
 {% elif tab == 'edit' %}
 <p class="info-lead">Edit booking for <strong>{{ appt['client_name'] }}</strong></p>
@@ -84,6 +52,18 @@
     {% endif %}
     <span class="amount">{{ fmt_money(a['revenue']) }}</span>
     <a href="{{ url('/bookings') }}?tab=edit&id={{ a['id'] }}" class="btn-edit">Edit</a>
+    {% if a['status'] == 'inquiry' %}
+    <form method="post" action="{{ url('/bookings/' ~ a['id'] ~ '/status') }}" class="inline-delete-form">
+      <input type="hidden" name="status" value="confirmed">
+      <input type="hidden" name="redirect_to" value="{{ url('/bookings') }}?tab=upcoming">
+      <button type="submit" class="btn-edit">Confirm</button>
+    </form>
+    <form method="post" action="{{ url('/bookings/' ~ a['id'] ~ '/status') }}" class="inline-delete-form">
+      <input type="hidden" name="status" value="cancelled">
+      <input type="hidden" name="redirect_to" value="{{ url('/bookings') }}?tab=upcoming">
+      <button type="submit" class="btn-delete-inline">Cancel</button>
+    </form>
+    {% endif %}
     <form method="post" action="{{ url('/bookings/' ~ a['id'] ~ '/delete') }}" class="inline-delete-form"
           onsubmit="return confirm('Delete this booking?')">
       <input type="hidden" name="redirect_to" value="{{ url('/bookings') }}?tab=upcoming">
@@ -98,7 +78,8 @@
 {% elif tab == 'session' %}
 <div id="session-timer-root"
      data-complete-url="{{ url('/bookings/session/complete') }}"
-     data-add-url="{{ url('/bookings') }}?tab=add"></div>
+     data-add-url="{{ url('/bookings') }}?tab=add"
+     data-bookings-url="{{ url('/bookings') }}"></div>
 <script type="application/json" id="session-upcoming-data">{{ session_upcoming | tojson }}</script>
 <script type="application/json" id="session-packages-data">{{ {'packages': session_packages, 'category_labels': category_labels} | tojson }}</script>
 
@@ -165,11 +146,8 @@
 {% block scripts %}
 {% if tab == 'add' or tab == 'edit' %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="{{ static_url('js/booking-form.js') }}?v=3"></script>
-<script src="{{ static_url('js/location-picker.js') }}?v=1"></script>
-{% elif tab == 'menu' %}
-<script src="{{ static_url('js/package-carousel.js') }}?v=1"></script>
-<script src="{{ static_url('js/booking-form.js') }}?v=3"></script>
+<script src="{{ static_url('js/booking-form.js') }}?v=4"></script>
+<script src="{{ static_url('js/location-picker.js') }}?v=2"></script>
 {% elif tab == 'session' %}
 <script src="{{ static_url('js/receipt-share.js') }}?v=1"></script>
 <script src="{{ static_url('js/session-timer.js') }}?v=3"></script>

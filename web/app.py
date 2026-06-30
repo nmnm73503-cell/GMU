@@ -43,6 +43,9 @@ templates = Jinja2Templates(directory=str(BASE / "templates"))
 (BASE / "static" / "uploads" / "bookings").mkdir(parents=True, exist_ok=True)
 (BASE / "static" / "uploads" / "packages").mkdir(parents=True, exist_ok=True)
 
+def _time_now_slot() -> str:
+    return datetime.now().strftime("%I:%M %p")
+
 
 def _session_appt_dict(row) -> dict:
     return {
@@ -452,7 +455,7 @@ async def bookings_hub(
     today = date.today().isoformat()
     if tab in ("new", "calendar"):
         tab = "add" if tab == "new" else "month"
-    if tab not in ("add", "upcoming", "past", "month", "edit", "session", "menu"):
+    if tab not in ("add", "upcoming", "past", "month", "edit", "session"):
         tab = "upcoming"
     appt = None
     form_ctx = {}
@@ -501,7 +504,8 @@ async def bookings_hub(
                 for r in conn.execute("SELECT key, value FROM settings").fetchall()
             }
             session_packages = _session_packages_list(conn)
-        if tab in ("menu", "add", "edit"):
+        # Menu moved to its own page (/menu). Keep galleries available for forms if needed.
+        if tab in ("add", "edit"):
             menu_packages = packages_with_galleries(conn, active_only=True)
     return templates.TemplateResponse(
         "bookings.html",
@@ -620,6 +624,45 @@ async def session_complete(request: Request):
         "cfg": cfg,
         "duration_minutes": duration_minutes,
     })
+
+
+@router.post("/bookings/{appt_id}/status")
+async def booking_set_status(
+    appt_id: int,
+    status: str = Form(...),
+    redirect_to: str = Form("/bookings?tab=upcoming"),
+):
+    allowed = {"inquiry", "confirmed", "deposit_paid", "completed", "cancelled"}
+    if status not in allowed:
+        raise HTTPException(400, "Invalid status")
+    with connect() as conn:
+        appt = conn.execute("SELECT * FROM appointments WHERE id = ?", (appt_id,)).fetchone()
+        if not appt:
+            return RedirectResponse(safe_redirect(redirect_to, "/bookings?tab=upcoming"), status_code=303)
+        conn.execute("UPDATE appointments SET status=? WHERE id=?", (status, appt_id))
+        if appt["client_id"]:
+            _refresh_client_ltv(conn, appt["client_id"])
+    return RedirectResponse(safe_redirect(redirect_to, "/bookings?tab=upcoming"), status_code=303)
+
+
+@router.post("/bookings/{appt_id}/session/start")
+async def booking_session_start(appt_id: int):
+    """Mark actual start time when you arrive on site."""
+    start_slot = _time_now_slot()
+    with connect() as conn:
+        appt = conn.execute("SELECT * FROM appointments WHERE id = ?", (appt_id,)).fetchone()
+        if not appt:
+            raise HTTPException(404, "Booking not found")
+        # Ensure it's active and confirmed
+        status = appt["status"] or "confirmed"
+        if status == "inquiry":
+            status = "confirmed"
+        conn.execute(
+            "UPDATE appointments SET start_time=?, status=? WHERE id=?",
+            (start_slot, status, appt_id),
+        )
+        updated = conn.execute("SELECT * FROM appointments WHERE id = ?", (appt_id,)).fetchone()
+    return JSONResponse({"start_time": updated["start_time"], "status": updated["status"]})
 
 
 @router.get("/bookings/new")
@@ -1039,6 +1082,20 @@ async def rate_card_page(request: Request):
             "request": request,
             "packages": packages,
             "packages_grouped": packages_grouped(packages),
+            "category_labels": CATEGORY_LABELS,
+        },
+    )
+
+
+@router.get("/menu", response_class=HTMLResponse)
+async def menu_page(request: Request):
+    with connect() as conn:
+        packages = packages_with_galleries(conn, active_only=True)
+    return templates.TemplateResponse(
+        "menu.html",
+        {
+            "request": request,
+            "packages": packages,
             "category_labels": CATEGORY_LABELS,
         },
     )

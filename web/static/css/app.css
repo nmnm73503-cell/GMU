@@ -1476,6 +1476,33 @@ main > .section-title {
 
 .location-map { height: 200px; border-radius: 10px; border: 1px solid var(--input-border); margin-top: 0.35rem; z-index: 1; }
 
+.location-suggestions { position: relative; margin-top: 0.35rem; }
+.location-suggestions-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  border: 1px solid var(--input-border);
+  background: var(--pill-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 5;
+}
+.location-suggestion {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.6rem 0.7rem;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.location-suggestion:last-child { border-bottom: none; }
+.location-suggestion:active { background: rgba(0,0,0,0.06); }
+
 .travel-actions { display: flex; gap: 0.35rem; flex-wrap: wrap; justify-content: flex-end; }
 .btn-travel {
   font-size: 0.68rem; padding: 0.28rem 0.5rem; border-radius: 6px;

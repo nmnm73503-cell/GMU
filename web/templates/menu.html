@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% set active = 'menu' %}
+{% block title %}Menu{% endblock %}
+{% block header %}Menu{% endblock %}
+{% block subtitle %}Glam styles & reference{% endblock %}
+{% block content %}
+<p class="info-lead">Swipe photos or let them auto-play — this is your on-site reference menu.</p>
+{% for pkg in packages %}
+{% if pkg['id'] not in ('custom',) and pkg['active'] %}
+<article class="glass menu-package-card motion-fade">
+  <div class="menu-package-header">
+    <div>
+      <h2 class="menu-package-title">{{ pkg['label'] }}</h2>
+      <p class="menu-package-meta">
+        {{ category_labels.get(pkg['category'], pkg['category']) }}
+        {% if pkg['headcount_tier'] %} · {{ pkg['headcount_tier'] }} people{% endif %}
+      </p>
+    </div>
+    <div class="menu-package-price">{{ fmt_money(pkg['price']) if pkg['price'] else 'Custom' }}</div>
+  </div>
+  {% if pkg['images'] %}
+  <div class="package-carousel" data-package-carousel>
+    {% for img in pkg['images'] %}
+    <div class="carousel-slide{% if loop.first %} active{% endif %}"><img src="{{ img }}" alt="{{ pkg['label'] }}"></div>
+    {% endfor %}
+    <div class="carousel-dots">
+      {% for img in pkg['images'] %}
+      <button type="button" class="carousel-dot{% if loop.first %} active{% endif %}" aria-label="Slide {{ loop.index }}"></button>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <div class="menu-package-placeholder">Add photos in <a href="{{ url('/settings/packages') }}">Settings → Packages</a></div>
+  {% endif %}
+</article>
+{% endif %}
+{% endfor %}
+{% endblock %}
+{% block scripts %}
+<script src="{{ static_url('js/package-carousel.js') }}?v=2"></script>
+{% endblock %}
+

@@ -33,11 +33,12 @@
     </div>
   </header>
   <main>{% block content %}{% endblock %}</main>
-  {% from 'partials/icons.html' import icon_home, icon_client, icon_bookings, icon_insights, icon_more %}
+  {% from 'partials/icons.html' import icon_home, icon_client, icon_bookings, icon_insights, icon_more, icon_menu %}
   <nav class="bottom-nav bottom-nav-bookings">
     <a href="{{ url('/') }}" class="nav-item {% if active == 'home' %}active{% endif %}"><span class="icon">{{ icon_home() }}</span>Home</a>
     <a href="{{ url('/clients') }}" class="nav-item {% if active == 'clients' %}active{% endif %}"><span class="icon">{{ icon_client() }}</span>Clients</a>
     <a href="{{ url('/bookings') }}?tab=upcoming" class="nav-item nav-item-bookings {% if active == 'bookings' %}active{% endif %}"><span class="icon">{{ icon_bookings() }}</span>Bookings</a>
+    <a href="{{ url('/menu') }}" class="nav-item {% if active == 'menu' %}active{% endif %}"><span class="icon">{{ icon_menu() }}</span>Menu</a>
     <a href="{{ url('/analytics') }}" class="nav-item {% if active == 'analytics' %}active{% endif %}"><span class="icon">{{ icon_insights() }}</span>Insights</a>
     <a href="{{ url('/more') }}" class="nav-item {% if active == 'more' %}active{% endif %}"><span class="icon">{{ icon_more() }}</span>More</a>
   </nav>

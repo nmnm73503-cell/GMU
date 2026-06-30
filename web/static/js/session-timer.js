@@ -232,15 +232,24 @@
     }
 
     if (state.phase === "pick") {
-      html += '<p class="info-lead">Pick the booking for this session (e.g. Ammar Gammar).</p>';
+      html += '<p class="info-lead">Pick the booking for this session (confirm inquiries first).</p>';
       if (!upcoming.length) {
         html += '<p class="empty-state">No upcoming bookings.<br><a href="' +
           (root.getAttribute("data-add-url") || "#") + '">Add a booking first →</a></p>';
       } else {
         upcoming.forEach(function (a) {
+          if ((a.status || "") === "cancelled") return;
+          if ((a.status || "") === "inquiry") {
+            html += renderApptRow(
+              a,
+              '<span class="status-pill upcoming">Inquiry</span>' +
+              '<a class="btn-edit" href="' + (root.getAttribute("data-bookings-url") || "") + '?tab=edit&id=' + a.id + '">Confirm</a>'
+            );
+            return;
+          }
           html += renderApptRow(
             a,
-            '<button type="button" class="btn btn-primary btn-sm session-start-btn" data-id="' + a.id + '">Start</button>'
+            '<button type="button" class="btn btn-primary btn-sm session-start-btn" data-id="' + a.id + '">Start session</button>'
           );
         });
       }
@@ -309,17 +318,27 @@
     root.querySelectorAll(".session-start-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var id = parseInt(btn.getAttribute("data-id"), 10);
-        saveState({
-          running: true,
-          startedAt: Date.now(),
-          hostApptId: id,
-          faces: [],
-          phase: "running",
-          receipts: [],
-          durationMinutes: 0,
-          cfg: null,
-        });
-        render();
+        var startUrl =
+          (document.body.getAttribute("data-static-base") || "") +
+          "/bookings/" + id + "/session/start";
+        fetch(startUrl, { method: "POST" })
+          .then(function (r) { if (!r.ok) throw new Error("fail"); return r.json(); })
+          .then(function () {
+            saveState({
+              running: true,
+              startedAt: Date.now(),
+              hostApptId: id,
+              faces: [],
+              phase: "running",
+              receipts: [],
+              durationMinutes: 0,
+              cfg: null,
+            });
+            render();
+          })
+          .catch(function () {
+            alert("Could not start the session. Try again.");
+          });
       });
     });
 

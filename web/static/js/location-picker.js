@@ -5,6 +5,9 @@
   var latInput = document.getElementById("location-lat");
   var lngInput = document.getElementById("location-lng");
   var labelInput = document.getElementById("location-label");
+  var suggestWrap = document.getElementById("location-suggestions");
+  var suggestList = document.getElementById("location-suggestions-list");
+  var suggestTimer = null;
 
   var startLat = parseFloat(mapEl.getAttribute("data-lat")) || -6.7924;
   var startLng = parseFloat(mapEl.getAttribute("data-lng")) || 39.2083;
@@ -41,6 +44,67 @@
       labelInput.placeholder = "Pinned location — add address name";
     }
   });
+
+  function clearSuggestions() {
+    if (!suggestWrap || !suggestList) return;
+    suggestList.innerHTML = "";
+    suggestWrap.hidden = true;
+  }
+
+  function showSuggestions(items) {
+    if (!suggestWrap || !suggestList) return;
+    suggestList.innerHTML = "";
+    if (!items.length) {
+      suggestWrap.hidden = true;
+      return;
+    }
+    items.slice(0, 6).forEach(function (it) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "location-suggestion";
+      btn.textContent = it.display_name;
+      btn.addEventListener("click", function () {
+        if (labelInput) labelInput.value = it.display_name;
+        var lat = parseFloat(it.lat);
+        var lng = parseFloat(it.lon);
+        if (!isNaN(lat) && !isNaN(lng)) {
+          setPin(lat, lng);
+          map.setView([lat, lng], 15);
+        }
+        clearSuggestions();
+      });
+      suggestList.appendChild(btn);
+    });
+    suggestWrap.hidden = false;
+  }
+
+  function searchNominatim(q) {
+    var url =
+      "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=6&q=" +
+      encodeURIComponent(q);
+    return fetch(url, { headers: { "Accept": "application/json" } })
+      .then(function (r) { return r.json(); })
+      .then(function (data) { return Array.isArray(data) ? data : []; })
+      .catch(function () { return []; });
+  }
+
+  if (labelInput) {
+    labelInput.setAttribute("autocomplete", "off");
+    labelInput.addEventListener("input", function () {
+      var q = labelInput.value.trim();
+      if (suggestTimer) clearTimeout(suggestTimer);
+      if (q.length < 3) {
+        clearSuggestions();
+        return;
+      }
+      suggestTimer = setTimeout(function () {
+        searchNominatim(q).then(showSuggestions);
+      }, 250);
+    });
+    labelInput.addEventListener("blur", function () {
+      setTimeout(clearSuggestions, 180);
+    });
+  }
 
   setTimeout(function () { map.invalidateSize(); }, 400);
 })();

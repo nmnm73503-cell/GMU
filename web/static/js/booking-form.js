@@ -83,7 +83,9 @@
     }
   }
 
-  if (startSel) startSel.addEventListener("change", setEndFromStart);
+  // Start/end are set by the live session (stopwatch), not guessed here.
+  // Keep manual time selection available but do not auto-set end time.
+  // if (startSel) startSel.addEventListener("change", setEndFromStart);
 
   if (toggleNew && newPanel) {
     toggleNew.addEventListener("click", function () {
@@ -115,12 +117,5 @@
     });
   }
 
-  var preset = localStorage.getItem("gmu-preset-package");
-  if (preset && picker) {
-    var card = picker.querySelector('.glam-card[data-id="' + preset + '"]');
-    if (card) selectGlam(card);
-    localStorage.removeItem("gmu-preset-package");
-    var statusEl = document.getElementById("booking-status");
-    if (statusEl) statusEl.value = "inquiry";
-  }
+  // Menu no longer sets a preset package on the booking form.
 })();

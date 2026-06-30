@@ -45,10 +45,5 @@
     resetTimer();
   });
 
-  document.querySelectorAll(".menu-book-btn").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var pkg = btn.getAttribute("data-pkg");
-      if (pkg) localStorage.setItem("gmu-preset-package", pkg);
-    });
-  });
+  // No booking CTA in menu (personal-use reference).
 })();

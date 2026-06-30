@@ -49,6 +49,9 @@
   <label>Location</label>
   <input name="location" id="location-label" type="text" placeholder="Address or place name"
          value="{{ appt['location'] if appt and appt['location'] else '' }}">
+  <div id="location-suggestions" class="location-suggestions" hidden>
+    <div id="location-suggestions-list" class="location-suggestions-list"></div>
+  </div>
   <input type="hidden" name="lat" id="location-lat" value="{{ appt['lat'] if appt and appt['lat'] else '' }}">
   <input type="hidden" name="lng" id="location-lng" value="{{ appt['lng'] if appt and appt['lng'] else '' }}">
   <div id="location-map" class="location-map" data-lat="{{ appt['lat'] if appt and appt['lat'] else '-6.7924' }}" data-lng="{{ appt['lng'] if appt and appt['lng'] else '39.2083' }}"></div>
