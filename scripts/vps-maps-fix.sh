@@ -52,7 +52,7 @@ if [[ -z "$KEY" ]]; then
 else
   GEO=$(curl -sS "https://maps.googleapis.com/maps/api/geocode/json?address=Dar+es+Salaam&key=${KEY}")
   echo "Geocoding API: $(echo "$GEO" | run_py -c "import sys,json; d=json.load(sys.stdin); print(d.get('status'), '-', d.get('error_message','OK')[:120])")"
-  SM=$(curl -sS "https://maps.googleapis.com/maps/api/staticmap?center=-6.79,39.21&zoom=12&size=200x200&key=${KEY}" | head -c 200)
+  SM=$(curl -sS "https://maps.googleapis.com/maps/api/staticmap?center=-6.79,39.21&zoom=12&size=200x200&key=${KEY}" 2>/dev/null | head -c 200 || true)
   if echo "$SM" | grep -q "PNG"; then
     echo "Static Maps API: OK"
   else
